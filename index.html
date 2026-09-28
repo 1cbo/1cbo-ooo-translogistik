@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>КП: 1С:БухОбслуживание для ООО «ТрансЛогистик»</title>
     <style>
         * {
@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -29,9 +30,9 @@
             background: #f4f7fc;
             color: #1e293b;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* ===== LAYOUT ===== */
         .layout {
             display: flex;
             min-height: 100vh;
@@ -50,7 +51,7 @@
             flex-direction: column;
             flex-shrink: 0;
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
-            z-index: 10;
+            z-index: 100;
             overflow-y: auto;
         }
 
@@ -136,6 +137,7 @@
             align-items: center;
             gap: 12px;
             font-family: inherit;
+            min-height: 48px;
         }
 
         .nav-tab .num {
@@ -149,7 +151,6 @@
             font-size: 0.85rem;
             font-weight: 700;
             flex-shrink: 0;
-            transition: all 0.2s ease;
         }
 
         .nav-tab:hover {
@@ -177,11 +178,63 @@
             text-align: center;
         }
 
+        /* ===== БУРГЕР (только мобильные) ===== */
+        .mobile-header {
+            display: none;
+            background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
+            padding: 12px 16px;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .mobile-logo {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 8px 12px;
+        }
+
+        .mobile-logo-text {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--brand-red);
+        }
+
+        .mobile-logo-text .num {
+            font-size: 1.15rem;
+            font-weight: 900;
+            margin-right: 1px;
+        }
+
+        .burger-btn {
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(217, 25, 32, 0.4);
+            transition: all 0.15s ease;
+        }
+
+        .burger-btn:active {
+            transform: scale(0.95);
+        }
+
         /* ===== MAIN ===== */
         .main {
             flex: 1;
             padding: 36px 44px 56px;
-            overflow-x: auto;
+            overflow-x: hidden;
             min-width: 0;
         }
 
@@ -237,14 +290,10 @@
             background: #ffffff;
             border-radius: 24px;
             padding: 28px 26px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
             border: 1px solid #e9edf4;
             transition: box-shadow 0.2s ease;
             margin-bottom: 24px;
-        }
-
-        .card:hover {
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
         }
 
         .card-title {
@@ -260,6 +309,7 @@
             border-bottom: 2px solid #f1f5f9;
             padding-bottom: 14px;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .card-title .badge {
@@ -293,9 +343,7 @@
             height: 100%;
         }
 
-        .col > .card:last-child {
-            flex: 1;
-        }
+        .col > .card:last-child { flex: 1; }
 
         /* ===== КЛИЕНТ ===== */
         .client-name-big {
@@ -333,7 +381,7 @@
         .badge-staff { background: #fce7f3; color: #9d174d; }
         .badge-nds { background: #fef2f2; color: #b91c1c; }
 
-        /* ===== СТРОКИ СТАТИСТИКИ ===== */
+        /* ===== СТРОКИ ===== */
         .stat-row {
             display: flex;
             justify-content: space-between;
@@ -345,13 +393,11 @@
         }
 
         .stat-row:last-child { border-bottom: none; }
-
         .stat-row .label { color: #475569; font-weight: 500; }
         .stat-row .value { font-weight: 700; color: var(--brand-navy); text-align: right; }
         .value.positive { color: #059669; }
         .value.warning { color: #d97706; }
 
-        /* ===== ВЫДЕЛЕНИЯ ===== */
         .highlight {
             background: #fef2f2;
             border-left: 4px solid var(--brand-red);
@@ -361,7 +407,6 @@
             font-size: 1rem;
             line-height: 1.55;
         }
-
         .highlight strong { color: var(--brand-red-dark); }
 
         .info-block {
@@ -373,12 +418,9 @@
             font-size: 1rem;
             line-height: 1.55;
         }
-
         .info-block strong { color: #0369a1; }
 
-        /* ===== ОПИСАНИЕ СИТУАЦИИ ===== */
         .situation-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-
         .situation-list li {
             display: flex;
             align-items: flex-start;
@@ -387,7 +429,6 @@
             line-height: 1.55;
             color: #334155;
         }
-
         .situation-list li .icon-bullet {
             flex-shrink: 0;
             width: 30px;
@@ -411,11 +452,9 @@
             border-left: 4px solid #0ea5e9;
             border-radius: 12px;
         }
-
         .reports-intro strong { color: #0369a1; }
 
         .reports-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
-
         .reports-table thead th {
             background: var(--brand-navy);
             color: white;
@@ -425,10 +464,8 @@
             font-size: 0.95rem;
             letter-spacing: 0.3px;
         }
-
         .reports-table thead th:first-child { border-radius: 12px 0 0 0; }
         .reports-table thead th:last-child { border-radius: 0 12px 0 0; text-align: right; }
-
         .reports-table tbody td {
             padding: 14px 16px;
             border-bottom: 1px solid #f1f5f9;
@@ -436,9 +473,7 @@
             line-height: 1.45;
             color: #1e293b;
         }
-
         .reports-table tbody tr:hover { background: #f8fafc; }
-
         .reports-table tbody td:last-child {
             text-align: right;
             color: #475569;
@@ -454,14 +489,12 @@
             font-weight: 600;
             white-space: nowrap;
         }
-
         .report-badge.fns { background: #dbeafe; color: #1e40af; }
         .report-badge.sfr { background: #fce7f3; color: #9d174d; }
         .report-badge.stat { background: #dcfce7; color: #166534; }
 
         .report-group { margin-bottom: 24px; }
         .report-group:last-of-type { margin-bottom: 0; }
-
         .report-group-title {
             font-size: 0.95rem;
             font-weight: 700;
@@ -481,7 +514,7 @@
             line-height: 1.55;
         }
 
-        /* ===== СЕТКА ПРЕИМУЩЕСТВ ===== */
+        /* ===== СЕТКИ ===== */
         .benefits-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -504,7 +537,6 @@
             background: #f0fdf4;
             border-color: #bbf7d0;
             transform: translateY(-3px);
-            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.1);
         }
 
         .benefit-icon {
@@ -520,22 +552,10 @@
             flex-shrink: 0;
         }
 
-        .benefit-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--brand-navy);
-            line-height: 1.3;
-        }
-
-        .benefit-text {
-            font-size: 1rem;
-            color: #475569;
-            line-height: 1.55;
-        }
-
+        .benefit-title { font-size: 1.1rem; font-weight: 700; color: var(--brand-navy); line-height: 1.3; }
+        .benefit-text { font-size: 1rem; color: #475569; line-height: 1.55; }
         .benefit-text strong { color: var(--brand-red-dark); }
 
-        /* ===== СЕТКА УСЛУГ (БЛОК 2) ===== */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -553,12 +573,10 @@
             gap: 12px;
             transition: all 0.15s ease;
         }
-
         .service-card:hover {
             background: #f0fdf4;
             border-color: #bbf7d0;
             transform: translateY(-3px);
-            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.1);
         }
 
         .service-icon {
@@ -573,23 +591,10 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             flex-shrink: 0;
         }
-
-        .service-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--brand-navy);
-            line-height: 1.3;
-        }
-
-        .service-text {
-            font-size: 0.98rem;
-            color: #475569;
-            line-height: 1.5;
-        }
-
+        .service-title { font-size: 1.1rem; font-weight: 700; color: var(--brand-navy); line-height: 1.3; }
+        .service-text { font-size: 0.98rem; color: #475569; line-height: 1.5; }
         .service-text strong { color: var(--brand-red-dark); }
 
-        /* ===== ОТРАСЛЕВОЙ АКЦЕНТ ===== */
         .industry-box {
             background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
             border: 2px solid #fecaca;
@@ -597,7 +602,6 @@
             padding: 24px 26px;
             margin-bottom: 24px;
         }
-
         .industry-box-title {
             font-size: 1.15rem;
             font-weight: 700;
@@ -607,14 +611,12 @@
             align-items: center;
             gap: 10px;
         }
-
         .industry-list {
             list-style: none;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px 24px;
         }
-
         .industry-list li {
             padding-left: 26px;
             position: relative;
@@ -622,7 +624,6 @@
             color: #334155;
             line-height: 1.5;
         }
-
         .industry-list li::before {
             content: "🚛";
             position: absolute;
@@ -631,21 +632,13 @@
             font-size: 1rem;
         }
 
-        /* ===== ЧТО НЕ ВХОДИТ ===== */
-        .not-included-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-            margin-top: 8px;
-        }
-
+        .not-included-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 8px; }
         .not-included-col {
             background: #f8fafc;
             border-radius: 16px;
             padding: 20px 22px;
             border: 1px solid #e9edf4;
         }
-
         .not-included-col-title {
             font-size: 0.95rem;
             font-weight: 700;
@@ -654,15 +647,8 @@
             color: #64748b;
             margin-bottom: 14px;
         }
-
-        .not-included-two-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
+        .not-included-two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .not-included-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-
         .not-included-list li {
             padding-left: 26px;
             position: relative;
@@ -670,7 +656,6 @@
             color: #334155;
             line-height: 1.5;
         }
-
         .not-included-list li::before {
             content: "•";
             position: absolute;
@@ -692,10 +677,9 @@
             color: #713f12;
             line-height: 1.55;
         }
-
         .not-included-note strong { color: #854d0e; }
 
-        /* ===== БЛОК 3: ХО ===== */
+        /* ===== БЛОК 3 ===== */
         .price-formula-box {
             background: linear-gradient(135deg, #0B2B4A 0%, #1E3A5F 100%);
             color: white;
@@ -706,7 +690,6 @@
             margin-bottom: 24px;
             overflow: hidden;
         }
-
         .price-formula-box::before {
             content: "";
             position: absolute;
@@ -717,7 +700,6 @@
             background: radial-gradient(circle, rgba(217, 25, 32, 0.25) 0%, transparent 70%);
             border-radius: 50%;
         }
-
         .price-formula-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -729,7 +711,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .price-formula-text {
             font-size: 1.15rem;
             line-height: 1.6;
@@ -737,9 +718,7 @@
             opacity: 0.95;
             max-width: 900px;
         }
-
         .price-formula-text strong { color: #FFDD00; font-weight: 700; }
-
         .price-formula-visual {
             background: #ffffff15;
             border: 2px dashed #ffffff40;
@@ -750,9 +729,7 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
-            backdrop-filter: blur(4px);
         }
-
         .formula-item {
             display: flex;
             align-items: center;
@@ -760,7 +737,6 @@
             font-size: 1.15rem;
             font-weight: 700;
         }
-
         .formula-item .num {
             background: var(--brand-red);
             color: white;
@@ -774,9 +750,7 @@
             font-size: 1rem;
             flex-shrink: 0;
         }
-
         .formula-eq { font-size: 1.8rem; font-weight: 800; opacity: 0.7; }
-
         .formula-highlight {
             background: var(--brand-red);
             color: white;
@@ -794,7 +768,6 @@
             padding: 24px 28px;
             margin-bottom: 24px;
         }
-
         .definition-box-title {
             font-size: 1rem;
             font-weight: 700;
@@ -806,22 +779,10 @@
             align-items: center;
             gap: 8px;
         }
-
-        .definition-box-text {
-            font-size: 1.15rem;
-            color: #1e293b;
-            line-height: 1.65;
-        }
-
+        .definition-box-text { font-size: 1.15rem; color: #1e293b; line-height: 1.65; }
         .definition-box-text strong { color: var(--brand-red-dark); font-weight: 700; }
 
-        .ho-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
+        .ho-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
         .ho-col {
             background: #ffffff;
             border-radius: 24px;
@@ -829,10 +790,8 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
             border: 1px solid #e9edf4;
         }
-
         .ho-col-yes { border-top: 6px solid #059669; }
         .ho-col-no { border-top: 6px solid var(--brand-red); }
-
         .ho-col-title {
             font-size: 1.2rem;
             font-weight: 700;
@@ -843,12 +802,9 @@
             align-items: center;
             gap: 10px;
         }
-
         .ho-col-yes .ho-col-title { color: #059669; }
         .ho-col-no .ho-col-title { color: var(--brand-red-dark); }
-
         .ho-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-
         .ho-list li {
             padding-left: 34px;
             position: relative;
@@ -856,10 +812,8 @@
             color: #334155;
             line-height: 1.5;
         }
-
         .ho-list li strong { color: var(--brand-navy); font-weight: 700; display: block; margin-bottom: 3px; }
         .ho-list li span { font-size: 0.95rem; color: #64748b; line-height: 1.45; }
-
         .ho-col-yes .ho-list li::before {
             content: "✓";
             position: absolute;
@@ -876,7 +830,6 @@
             font-weight: 900;
             font-size: 1rem;
         }
-
         .ho-col-no .ho-list li::before {
             content: "✕";
             position: absolute;
@@ -903,7 +856,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .docs-box::before {
             content: "🚛 ДОП. УСЛУГА";
             position: absolute;
@@ -918,7 +870,6 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(217, 25, 32, 0.3);
         }
-
         .docs-box-title {
             font-size: 1.35rem;
             font-weight: 700;
@@ -928,23 +879,9 @@
             align-items: center;
             gap: 10px;
         }
-
-        .docs-text {
-            font-size: 1.1rem;
-            color: #1e293b;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
+        .docs-text { font-size: 1.1rem; color: #1e293b; line-height: 1.6; margin-bottom: 22px; }
         .docs-text strong { color: var(--brand-red-dark); }
-
-        .docs-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 20px;
-        }
-
+        .docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
         .docs-item {
             background: #ffffff;
             border-radius: 18px;
@@ -955,12 +892,9 @@
             border: 2px solid #e9edf4;
             transition: all 0.15s ease;
         }
-
         .docs-item:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); }
-
         .docs-item-we { border-top: 5px solid var(--brand-red); }
         .docs-item-you { border-top: 5px solid #059669; }
-
         .docs-item-icon {
             width: 48px;
             height: 48px;
@@ -971,21 +905,12 @@
             font-size: 1.6rem;
             flex-shrink: 0;
         }
-
         .docs-item-we .docs-item-icon { background: #fef2f2; }
         .docs-item-you .docs-item-icon { background: #f0fdf4; }
-
-        .docs-item-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
+        .docs-item-title { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
         .docs-item-we .docs-item-title { color: var(--brand-red-dark); }
         .docs-item-you .docs-item-title { color: #059669; }
-
         .docs-item-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
         .docs-item-list li {
             padding-left: 24px;
             position: relative;
@@ -993,7 +918,6 @@
             color: #334155;
             line-height: 1.5;
         }
-
         .docs-item-list li::before {
             content: "•";
             position: absolute;
@@ -1003,7 +927,6 @@
             font-weight: 900;
             font-size: 1.3rem;
         }
-
         .docs-note {
             padding: 16px 20px;
             background: #ffffff;
@@ -1013,7 +936,6 @@
             color: #1e293b;
             line-height: 1.55;
         }
-
         .docs-note strong { color: var(--brand-red-dark); }
 
         .save-box {
@@ -1025,7 +947,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .save-box::before {
             content: "💡 КАК СЭКОНОМИТЬ";
             position: absolute;
@@ -1040,18 +961,9 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
         }
-
-        .save-text {
-            font-size: 1.1rem;
-            color: #064e3b;
-            line-height: 1.65;
-            margin-bottom: 18px;
-        }
-
+        .save-text { font-size: 1.1rem; color: #064e3b; line-height: 1.65; margin-bottom: 18px; }
         .save-text strong { color: #065f46; font-weight: 700; }
-
         .save-rules { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-
         .save-rules li {
             background: #ffffff;
             border-radius: 12px;
@@ -1064,7 +976,6 @@
             line-height: 1.5;
             border: 1px solid #bbf7d0;
         }
-
         .save-rules li .num-badge {
             flex-shrink: 0;
             width: 28px;
@@ -1090,13 +1001,7 @@
             align-items: center;
             gap: 10px;
         }
-
-        .examples-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
+        .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .example-card {
             background: #ffffff;
             border-radius: 20px;
@@ -1106,9 +1011,7 @@
             border-top: 5px solid var(--brand-red);
             transition: transform 0.15s ease;
         }
-
-        .example-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06); }
-
+        .example-card:hover { transform: translateY(-3px); }
         .example-num {
             font-size: 0.8rem;
             font-weight: 800;
@@ -1117,31 +1020,10 @@
             letter-spacing: 1px;
             margin-bottom: 10px;
         }
-
-        .example-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--brand-navy);
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
-
+        .example-title { font-size: 1.1rem; font-weight: 700; color: var(--brand-navy); margin-bottom: 12px; line-height: 1.3; }
         .example-text { font-size: 1rem; color: #475569; line-height: 1.6; }
-
-        .example-text ul {
-            list-style: none;
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .example-text ul li {
-            padding-left: 20px;
-            position: relative;
-            font-size: 0.98rem;
-        }
-
+        .example-text ul { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+        .example-text ul li { padding-left: 20px; position: relative; font-size: 0.98rem; }
         .example-text ul li::before {
             content: "→";
             position: absolute;
@@ -1149,7 +1031,6 @@
             color: #94a3b8;
             font-weight: 700;
         }
-
         .example-result {
             margin-top: 14px;
             padding: 12px 16px;
@@ -1170,7 +1051,6 @@
             position: relative;
             margin-bottom: 0;
         }
-
         .learn-box::before {
             content: "🎓 ОБУЧЕНИЕ";
             position: absolute;
@@ -1185,7 +1065,6 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(67, 56, 202, 0.3);
         }
-
         .learn-box-title {
             font-size: 1.35rem;
             font-weight: 700;
@@ -1196,24 +1075,9 @@
             gap: 10px;
             line-height: 1.3;
         }
-
-        .learn-text {
-            font-size: 1.1rem;
-            color: #1e293b;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
+        .learn-text { font-size: 1.1rem; color: #1e293b; line-height: 1.6; margin-bottom: 22px; }
         .learn-text strong { color: #3730a3; font-weight: 700; }
-
-        .learn-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-
+        .learn-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
         .learn-list li {
             display: flex;
             align-items: flex-start;
@@ -1226,7 +1090,6 @@
             color: #334155;
             line-height: 1.5;
         }
-
         .learn-list li::before {
             content: "✓";
             flex-shrink: 0;
@@ -1241,7 +1104,6 @@
             font-weight: 900;
             font-size: 0.9rem;
         }
-
         .learn-warning {
             padding: 16px 20px;
             background: #fef9c3;
@@ -1251,10 +1113,9 @@
             color: #713f12;
             line-height: 1.55;
         }
-
         .learn-warning strong { color: #854d0e; }
 
-        /* ===== БЛОК 4: КАЛЬКУЛЯТОР ===== */
+        /* ===== КАЛЬКУЛЯТОР ===== */
         .calc-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1262,7 +1123,6 @@
             margin-bottom: 24px;
             align-items: stretch;
         }
-
         .calc-col {
             background: #ffffff;
             border-radius: 24px;
@@ -1272,10 +1132,8 @@
             display: flex;
             flex-direction: column;
         }
-
         .calc-col-tariff { border-top: 6px solid var(--brand-red); }
         .calc-col-extra { border-top: 6px solid #4338ca; }
-
         .calc-col-title {
             font-size: 1.25rem;
             font-weight: 700;
@@ -1286,7 +1144,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .calc-col-tariff .calc-col-title { color: var(--brand-red-dark); }
         .calc-col-extra .calc-col-title { color: #3730a3; }
 
@@ -1298,10 +1155,7 @@
             margin-bottom: 14px;
             transition: all 0.15s ease;
         }
-
         .op-row:last-child { margin-bottom: 0; }
-        .op-row:hover { background: #f1f5f9; border-color: #cbd5e1; }
-
         .calc-col-tariff .op-row { border-left: 5px solid var(--brand-red); }
         .calc-col-extra .op-row { border-left: 5px solid #4338ca; }
 
@@ -1313,14 +1167,7 @@
             gap: 12px;
             flex-wrap: wrap;
         }
-
-        .op-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #475569;
-            line-height: 1.3;
-        }
-
+        .op-name { font-size: 1rem; font-weight: 600; color: #475569; line-height: 1.3; }
         .op-value {
             font-size: 1.2rem;
             font-weight: 800;
@@ -1332,49 +1179,32 @@
             text-align: center;
             border: 2px solid #e2e8f0;
         }
-
-        .calc-col-tariff .op-value {
-            color: var(--brand-red-dark);
-            background: #fef2f2;
-            border-color: #fecaca;
-        }
-
-        .calc-col-extra .op-value {
-            color: #3730a3;
-            background: #eef2ff;
-            border-color: #c7d2fe;
-        }
+        .calc-col-tariff .op-value { color: var(--brand-red-dark); background: #fef2f2; border-color: #fecaca; }
+        .calc-col-extra .op-value { color: #3730a3; background: #eef2ff; border-color: #c7d2fe; }
 
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 8px;
+            height: 10px;
             border-radius: 8px;
             background: #e2e8f0;
             outline: none;
             cursor: pointer;
             margin-bottom: 10px;
+            touch-action: manipulation;
         }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: white;
             border: 4px solid var(--brand-navy);
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            transition: all 0.15s ease;
         }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-        }
-
         .calc-col-tariff input[type="range"]::-webkit-slider-thumb { border-color: var(--brand-red); }
         .calc-col-extra input[type="range"]::-webkit-slider-thumb { border-color: #4338ca; }
 
@@ -1395,10 +1225,9 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
         }
-
         .mode-btn {
             flex: 1;
-            padding: 10px 16px;
+            padding: 12px 16px;
             border-radius: 9px;
             font-size: 0.9rem;
             font-weight: 700;
@@ -1409,9 +1238,8 @@
             background: transparent;
             color: #64748b;
             font-family: inherit;
+            min-height: 44px;
         }
-
-        .mode-btn:hover { background: #f1f5f9; }
         .mode-btn.active-we { background: var(--brand-red); color: white; box-shadow: 0 2px 8px rgba(217, 25, 32, 0.3); }
         .mode-btn.active-client { background: #059669; color: white; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3); }
 
@@ -1428,17 +1256,10 @@
             align-items: flex-start;
             gap: 12px;
         }
-
         .cash-box .cash-icon { font-size: 1.4rem; flex-shrink: 0; }
         .cash-box strong { color: #065f46; }
 
-        .extra-price {
-            font-size: 0.9rem;
-            color: #64748b;
-            font-weight: 600;
-            margin-top: 4px;
-        }
-
+        .extra-price { font-size: 0.9rem; color: #64748b; font-weight: 600; margin-top: 4px; }
         .extra-price strong { color: #3730a3; font-size: 1rem; }
 
         .total-box {
@@ -1450,7 +1271,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .total-box::before {
             content: "📊 ИТОГОВЫЙ РАСЧЁТ";
             position: absolute;
@@ -1465,9 +1285,7 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(217, 25, 32, 0.4);
         }
-
         .total-rows { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
-
         .total-row {
             display: flex;
             justify-content: space-between;
@@ -1477,20 +1295,16 @@
             gap: 16px;
             flex-wrap: wrap;
         }
-
         .total-row .tr-label { font-size: 1.05rem; opacity: 0.9; }
         .total-row .tr-value { font-size: 1.3rem; font-weight: 800; }
-
         .total-row-control {
             background: #FFDD0020;
             border-radius: 12px;
             padding: 14px 18px !important;
             border: 1px solid #FFDD0060 !important;
         }
-
         .total-row-control .tr-label { color: #FFDD00; font-weight: 700; }
         .total-row-control .tr-value { color: #FFDD00; }
-
         .total-final {
             background: #ffffff15;
             border: 2px dashed #ffffff40;
@@ -1502,18 +1316,9 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
-            backdrop-filter: blur(4px);
         }
-
         .total-final-label { font-size: 1.1rem; font-weight: 700; opacity: 0.9; }
-
-        .total-final-value {
-            font-size: 2.4rem;
-            font-weight: 900;
-            color: #FFDD00;
-            line-height: 1.1;
-        }
-
+        .total-final-value { font-size: 2.4rem; font-weight: 900; color: #FFDD00; line-height: 1.1; }
         .total-final-sub { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; }
 
         .control-info-box {
@@ -1525,7 +1330,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .control-info-box::before {
             content: "⚠️ ВАЖНО ЗНАТЬ";
             position: absolute;
@@ -1540,7 +1344,6 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
         }
-
         .control-info-title {
             font-size: 1.35rem;
             font-weight: 700;
@@ -1551,24 +1354,9 @@
             gap: 10px;
             line-height: 1.3;
         }
-
-        .control-info-text {
-            font-size: 1.1rem;
-            color: #1e293b;
-            line-height: 1.65;
-            margin-bottom: 20px;
-        }
-
+        .control-info-text { font-size: 1.1rem; color: #1e293b; line-height: 1.65; margin-bottom: 20px; }
         .control-info-text strong { color: #854d0e; font-weight: 700; }
-
-        .control-info-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
+        .control-info-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .control-info-list li {
             display: flex;
             align-items: flex-start;
@@ -1581,7 +1369,6 @@
             color: #334155;
             line-height: 1.45;
         }
-
         .control-info-list li::before {
             content: "✓";
             flex-shrink: 0;
@@ -1596,7 +1383,6 @@
             font-weight: 900;
             font-size: 0.9rem;
         }
-
         .control-info-warning {
             padding: 16px 20px;
             background: #ffffff;
@@ -1606,7 +1392,6 @@
             color: #1e293b;
             line-height: 1.55;
         }
-
         .control-info-warning strong { color: var(--brand-red-dark); }
 
         .tariff-table-card {
@@ -1617,7 +1402,6 @@
             border: 1px solid #e9edf4;
             margin-bottom: 24px;
         }
-
         .tariff-table-title {
             font-size: 1.25rem;
             font-weight: 700;
@@ -1630,13 +1414,7 @@
             gap: 10px;
             line-height: 1.3;
         }
-
-        .tariff-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-        }
-
+        .tariff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
         .tariff-item {
             background: #f8fafc;
             border-radius: 12px;
@@ -1648,10 +1426,7 @@
             gap: 12px;
             transition: all 0.15s ease;
         }
-
-        .tariff-item:hover { background: #f0fdf4; border-color: #bbf7d0; }
         .tariff-item.active { background: #fef2f2; border-color: var(--brand-red); box-shadow: 0 4px 12px rgba(217, 25, 32, 0.15); }
-
         .tariff-range { font-size: 0.95rem; font-weight: 600; color: #475569; }
         .tariff-price { font-size: 1rem; font-weight: 800; color: var(--brand-navy); }
         .tariff-item.active .tariff-range { color: var(--brand-red-dark); }
@@ -1666,7 +1441,6 @@
             border-top: 6px solid #eab308;
             margin-bottom: 0;
         }
-
         .control-table-title {
             font-size: 1.25rem;
             font-weight: 700;
@@ -1678,13 +1452,7 @@
             align-items: center;
             gap: 10px;
         }
-
-        .control-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 12px;
-        }
-
+        .control-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
         .control-item {
             background: #fef9c3;
             border-radius: 12px;
@@ -1696,14 +1464,11 @@
             gap: 12px;
             transition: all 0.15s ease;
         }
-
-        .control-item:hover { background: #fef3c7; border-color: #eab308; }
         .control-item.active { background: #fef3c7; border-color: #eab308; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.25); }
-
         .control-range { font-size: 0.95rem; font-weight: 600; color: #713f12; }
         .control-price { font-size: 1rem; font-weight: 800; color: #854d0e; }
 
-        /* ===== БЛОК 5: РИСКИ ===== */
+        /* ===== БЛОК 5 ===== */
         .pains-box {
             background: #ffffff;
             border: 3px solid var(--brand-navy);
@@ -1713,7 +1478,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .pains-title {
             position: absolute;
             top: -18px;
@@ -1730,13 +1494,10 @@
             align-items: center;
             gap: 8px;
         }
-
         .pains-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px; }
-
         .pains-col { border-radius: 18px; padding: 24px 26px; }
         .pains-col-risk { background: #fef2f2; border: 2px solid #fecaca; }
         .pains-col-solution { background: #f0fdf4; border: 2px solid #bbf7d0; }
-
         .pains-col-title {
             font-size: 1rem;
             font-weight: 800;
@@ -1749,23 +1510,19 @@
             align-items: center;
             gap: 8px;
         }
-
         .pains-col-risk .pains-col-title { color: #b91c1c; border-color: #fecaca; }
         .pains-col-solution .pains-col-title { color: #059669; border-color: #bbf7d0; }
-
         .pains-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
         .pains-list li { display: flex; flex-direction: column; gap: 4px; line-height: 1.45; }
         .pains-list li strong { font-size: 1.02rem; font-weight: 700; }
         .pains-col-risk .pains-list li strong { color: #991b1b; }
         .pains-col-solution .pains-list li strong { color: #065f46; }
-
         .pains-list li span {
             font-size: 0.95rem;
             color: #64748b;
             padding-left: 18px;
             position: relative;
         }
-
         .pains-list li span::before {
             content: "→";
             position: absolute;
@@ -1773,7 +1530,6 @@
             color: #94a3b8;
         }
 
-        /* ===== СРАВНЕНИЕ ===== */
         .compare-box {
             background: #ffffff;
             border-radius: 24px;
@@ -1783,7 +1539,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .compare-box::before {
             content: "💼 СРАВНЕНИЕ";
             position: absolute;
@@ -1798,7 +1553,6 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(11, 43, 74, 0.3);
         }
-
         .compare-title {
             font-size: 1.35rem;
             font-weight: 700;
@@ -1806,25 +1560,19 @@
             margin-bottom: 8px;
             text-align: center;
         }
-
         .compare-subtitle {
             font-size: 1rem;
             color: #64748b;
             margin-bottom: 28px;
             text-align: center;
         }
-
         .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
         .compare-card {
             border-radius: 20px;
             padding: 28px 26px;
             border: 2px solid;
             transition: all 0.2s ease;
         }
-
-        .compare-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); }
-
         .compare-card-staff { background: #fef2f2; border-color: #fecaca; }
         .compare-card-1c {
             background: #f0fdf4;
@@ -1832,7 +1580,6 @@
             border-width: 3px;
             box-shadow: 0 8px 24px rgba(5, 150, 105, 0.15);
         }
-
         .compare-card-title {
             font-size: 1.15rem;
             font-weight: 800;
@@ -1843,14 +1590,10 @@
             align-items: center;
             gap: 10px;
         }
-
         .compare-card-staff .compare-card-title { color: #b91c1c; border-color: #fecaca; }
         .compare-card-1c .compare-card-title { color: #059669; border-color: #bbf7d0; }
-
         .compare-card-title .c-icon { font-size: 1.5rem; }
-
         .compare-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
-
         .compare-list li {
             display: flex;
             justify-content: space-between;
@@ -1861,14 +1604,12 @@
             padding-bottom: 12px;
             border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
         }
-
         .compare-list li:last-child { border-bottom: none; padding-bottom: 0; }
         .compare-list .c-label { color: #475569; font-weight: 500; flex: 1; }
         .compare-list .c-value { font-weight: 700; text-align: right; white-space: nowrap; }
         .compare-card-staff .c-value { color: #b91c1c; }
         .compare-card-1c .c-value { color: #059669; }
         .compare-list .c-value.c-included { color: #059669; font-style: italic; }
-
         .compare-total {
             margin-top: 20px;
             padding: 18px 22px;
@@ -1879,18 +1620,14 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-
         .compare-card-staff .compare-total { background: #ffffff; border: 2px solid #fecaca; }
         .compare-card-1c .compare-total { background: #ffffff; border: 2px solid #86efac; }
-
         .compare-total .t-label { font-size: 1rem; font-weight: 700; }
         .compare-card-staff .compare-total .t-label { color: #991b1b; }
         .compare-card-1c .compare-total .t-label { color: #065f46; }
-
         .compare-total .t-value { font-size: 1.8rem; font-weight: 900; line-height: 1.1; }
         .compare-card-staff .compare-total .t-value { color: #b91c1c; }
         .compare-card-1c .compare-total .t-value { color: #059669; }
-
         .compare-total .t-sub { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; }
 
         .savings-box {
@@ -1902,7 +1639,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .savings-box::before {
             content: "💰 ВАША ЭКОНОМИЯ";
             position: absolute;
@@ -1917,7 +1653,6 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
         }
-
         .savings-main {
             display: flex;
             justify-content: space-between;
@@ -1928,10 +1663,8 @@
             border-bottom: 2px dashed #86efac;
             margin-bottom: 24px;
         }
-
         .savings-month, .savings-year { display: flex; flex-direction: column; gap: 6px; }
         .savings-year { text-align: right; }
-
         .savings-month .s-label, .savings-year .s-label {
             font-size: 1rem;
             font-weight: 600;
@@ -1939,10 +1672,8 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .savings-month .s-value { font-size: 2.8rem; font-weight: 900; color: #059669; line-height: 1.1; }
         .savings-year .s-value { font-size: 2.2rem; font-weight: 900; color: #059669; line-height: 1.1; }
-
         .benefits-section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -1951,9 +1682,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .benefits-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
         .benefit-item {
             display: flex;
             align-items: flex-start;
@@ -1964,14 +1693,6 @@
             border: 1px solid #bbf7d0;
             transition: all 0.15s ease;
         }
-
-        .benefit-item:hover {
-            background: #f8fafc;
-            border-color: #86efac;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.1);
-        }
-
         .benefit-item .b-icon {
             width: 44px;
             height: 44px;
@@ -1983,12 +1704,11 @@
             font-size: 1.4rem;
             flex-shrink: 0;
         }
-
         .benefit-item .b-content { display: flex; flex-direction: column; gap: 4px; }
         .benefit-item .b-title { font-size: 1.05rem; font-weight: 700; color: #065f46; line-height: 1.3; }
         .benefit-item .b-text { font-size: 0.95rem; color: #64748b; line-height: 1.45; }
 
-        /* ===== БЛОК 6: ГАРАНТИИ ===== */
+        /* ===== БЛОК 6 ===== */
         .guarantees-box {
             background: #ffffff;
             border: 3px solid var(--brand-navy);
@@ -1998,7 +1718,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .guarantees-box::before {
             content: "🛡️ ГАРАНТИИ";
             position: absolute;
@@ -2013,12 +1732,9 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(11, 43, 74, 0.3);
         }
-
         .guarantees-title { font-size: 1.3rem; font-weight: 700; color: var(--brand-navy); margin-bottom: 8px; }
         .guarantees-subtitle { font-size: 1rem; color: #64748b; margin-bottom: 24px; }
-
         .guarantees-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-
         .guarantee-card {
             background: #f8fafc;
             border: 2px solid #e9edf4;
@@ -2029,14 +1745,7 @@
             gap: 12px;
             transition: all 0.15s ease;
         }
-
-        .guarantee-card:hover {
-            background: #f0fdf4;
-            border-color: #86efac;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.1);
-        }
-
+        .guarantee-card:hover { background: #f0fdf4; border-color: #86efac; transform: translateY(-3px); }
         .guarantee-icon {
             width: 48px;
             height: 48px;
@@ -2049,7 +1758,6 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             flex-shrink: 0;
         }
-
         .guarantee-title { font-size: 1.05rem; font-weight: 700; color: var(--brand-navy); line-height: 1.3; }
         .guarantee-text { font-size: 0.98rem; color: #475569; line-height: 1.5; }
         .guarantee-text strong { color: #059669; font-weight: 700; }
@@ -2063,7 +1771,6 @@
             position: relative;
             margin-bottom: 24px;
         }
-
         .steps-box::before {
             content: "🔄 КАК МЫ РАБОТАЕМ";
             position: absolute;
@@ -2078,12 +1785,9 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(217, 25, 32, 0.3);
         }
-
         .steps-title { font-size: 1.3rem; font-weight: 700; color: var(--brand-navy); margin-bottom: 8px; }
         .steps-subtitle { font-size: 1rem; color: #64748b; margin-bottom: 24px; }
-
         .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-
         .step-item {
             background: #f8fafc;
             border: 2px solid #e9edf4;
@@ -2093,14 +1797,7 @@
             gap: 16px;
             transition: all 0.15s ease;
         }
-
-        .step-item:hover {
-            background: #fef2f2;
-            border-color: #fecaca;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 24px rgba(217, 25, 32, 0.1);
-        }
-
+        .step-item:hover { background: #fef2f2; border-color: #fecaca; transform: translateY(-3px); }
         .step-num {
             flex-shrink: 0;
             width: 40px;
@@ -2115,7 +1812,6 @@
             font-weight: 800;
             box-shadow: 0 4px 12px rgba(217, 25, 32, 0.3);
         }
-
         .step-content { display: flex; flex-direction: column; gap: 4px; }
         .step-title { font-size: 1.02rem; font-weight: 700; color: var(--brand-navy); line-height: 1.3; }
         .step-text { font-size: 0.95rem; color: #64748b; line-height: 1.45; }
@@ -2130,7 +1826,6 @@
             position: relative;
             margin-bottom: 0;
         }
-
         .stage-box::before {
             content: "📋 НАЧАЛО СОТРУДНИЧЕСТВА";
             position: absolute;
@@ -2145,12 +1840,9 @@
             border-radius: 40px;
             box-shadow: 0 4px 12px rgba(217, 25, 32, 0.3);
         }
-
         .stage-title { font-size: 1.3rem; font-weight: 700; color: var(--brand-navy); margin-bottom: 8px; }
         .stage-subtitle { font-size: 1rem; color: #64748b; margin-bottom: 24px; }
-
         .stage-table { width: 100%; border-collapse: collapse; font-size: 1.05rem; }
-
         .stage-table thead th {
             background: var(--brand-navy);
             color: white;
@@ -2160,10 +1852,8 @@
             font-size: 1rem;
             letter-spacing: 0.3px;
         }
-
         .stage-table thead th:first-child { border-radius: 12px 0 0 0; width: 80px; text-align: center; }
         .stage-table thead th:last-child { border-radius: 0 12px 0 0; }
-
         .stage-table tbody td {
             padding: 18px;
             border-bottom: 1px solid #f1f5f9;
@@ -2171,9 +1861,7 @@
             line-height: 1.55;
             color: #1e293b;
         }
-
         .stage-table tbody tr:hover { background: #f8fafc; }
-
         .stage-table tbody td:first-child {
             font-weight: 700;
             color: var(--brand-red);
@@ -2181,7 +1869,7 @@
             font-size: 1.15rem;
         }
 
-        /* ===== БЛОК 7: ИТОГИ ===== */
+        /* ===== БЛОК 7 ===== */
         .final-card {
             background: linear-gradient(135deg, #0B2B4A 0%, #1E3A5F 100%);
             color: white;
@@ -2191,7 +1879,6 @@
             position: relative;
             margin-bottom: 0;
         }
-
         .final-card-title {
             font-size: 1.5rem;
             font-weight: 700;
@@ -2202,11 +1889,8 @@
             align-items: center;
             gap: 12px;
         }
-
         .final-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; margin-bottom: 28px; }
-
         .final-left { display: flex; flex-direction: column; gap: 24px; }
-
         .final-section-title {
             font-size: 1rem;
             font-weight: 700;
@@ -2215,9 +1899,7 @@
             opacity: 0.8;
             margin-bottom: 14px;
         }
-
         .final-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-
         .final-list li {
             display: flex;
             align-items: flex-start;
@@ -2225,7 +1907,6 @@
             font-size: 1.05rem;
             line-height: 1.5;
         }
-
         .final-list li::before {
             content: "✓";
             flex-shrink: 0;
@@ -2241,17 +1922,13 @@
             font-size: 0.85rem;
             margin-top: 2px;
         }
-
         .final-price-box {
             background: #ffffff15;
             border: 2px dashed #FFDD0060;
             border-radius: 18px;
             padding: 24px 28px;
-            backdrop-filter: blur(4px);
         }
-
         .final-price-label { font-size: 1rem; opacity: 0.85; margin-bottom: 6px; }
-
         .final-price-value {
             font-size: 2.8rem;
             font-weight: 900;
@@ -2259,23 +1936,17 @@
             line-height: 1.1;
             margin-bottom: 4px;
         }
-
         .final-price-sub { font-size: 0.9rem; opacity: 0.75; }
-
         .final-right { display: flex; flex-direction: column; gap: 24px; }
-
         .contacts-box {
             background: #ffffff15;
             border-radius: 18px;
             padding: 24px 26px;
-            backdrop-filter: blur(4px);
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-
         .contact-item { display: flex; align-items: flex-start; gap: 14px; }
-
         .contact-icon {
             flex-shrink: 0;
             width: 36px;
@@ -2287,38 +1958,53 @@
             justify-content: center;
             font-size: 1.1rem;
         }
-
         .contact-info { display: flex; flex-direction: column; gap: 2px; }
         .contact-label { font-size: 0.85rem; opacity: 0.7; }
         .contact-value { font-size: 1rem; font-weight: 600; color: white; line-height: 1.4; }
-
-        .contact-value a { color: white; text-decoration: none; transition: color 0.15s ease; }
+        .contact-value a { color: white; text-decoration: none; }
         .contact-value a:hover { color: #FFDD00; }
 
-        /* ===== АДАПТИВ ===== */
-        @media (max-width: 1000px) {
-            .layout { flex-direction: column; }
+        /* ================================================== */
+        /* ============= МОБИЛЬНАЯ АДАПТАЦИЯ =============== */
+        /* ================================================== */
 
+        /* Планшеты и меньше */
+        @media (max-width: 1000px) {
+            html { font-size: 16px; }
+
+            .mobile-header { display: flex; }
             .sidebar {
+                position: fixed;
+                top: 72px;
+                left: 0;
                 width: 100%;
-                height: auto;
-                position: relative;
+                height: calc(100vh - 72px);
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+                padding-top: 20px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-header { display: none; }
+            .nav-tabs {
+                flex-direction: column;
+                gap: 10px;
                 padding: 20px;
             }
-
-            .nav-tabs { flex-direction: row; flex-wrap: wrap; }
-
             .nav-tab {
-                flex: 1 1 auto;
-                min-width: 150px;
-                font-size: 0.85rem;
-                padding: 10px 12px;
+                font-size: 1rem;
+                padding: 16px 18px;
+                min-height: 56px;
             }
-
-            .nav-tab .num { width: 22px; height: 22px; font-size: 0.75rem; }
-
-            .main { padding: 24px 18px 40px; }
-            .panel-header h1 { font-size: 1.6rem; }
+            .nav-tab .num {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+            .sidebar-footer { display: none; }
+            .main { padding: 24px 20px 40px; }
 
             .two-cols, .calc-grid, .compare-grid, .ho-grid, .docs-grid,
             .pains-grid, .control-info-list, .benefits-subgrid {
@@ -2333,53 +2019,310 @@
             .examples-grid { grid-template-columns: 1fr; }
         }
 
+        /* Телефоны */
         @media (max-width: 700px) {
-            .panel-header h1 { font-size: 1.4rem; }
-            .client-name-big { font-size: 1.4rem; }
+            html { font-size: 15px; }
 
-            .services-grid, .benefits-grid, .guarantees-grid {
+            .mobile-header { padding: 10px 14px; }
+            .mobile-logo { padding: 6px 10px; }
+            .mobile-logo-text { font-size: 0.8rem; }
+            .mobile-logo-text .num { font-size: 1rem; }
+            .burger-btn { width: 44px; height: 44px; font-size: 1.3rem; }
+
+            .main { padding: 20px 14px 32px; }
+
+            .panel-header { margin-bottom: 20px; }
+            .panel-header h1 {
+                font-size: 1.4rem;
+                gap: 10px;
+            }
+            .panel-header h1 .tag {
+                font-size: 0.75rem;
+                padding: 4px 12px;
+            }
+            .panel-header .desc { font-size: 0.95rem; }
+
+            .client-name-big { font-size: 1.3rem; }
+            .client-subtitle { font-size: 0.9rem; }
+
+            .badge-item { font-size: 0.75rem; padding: 5px 12px; }
+
+            .stat-row { font-size: 0.95rem; padding: 12px 0; }
+
+            .card {
+                padding: 22px 18px;
+                border-radius: 18px;
+                margin-bottom: 18px;
+            }
+            .card-title { font-size: 1.05rem; margin-bottom: 14px; padding-bottom: 12px; }
+            .card-title .badge { font-size: 0.7rem; padding: 3px 10px; }
+
+            /* Сетки в одну колонку */
+            .services-grid, .benefits-grid, .guarantees-grid,
+            .not-included-two-cols, .docs-grid {
                 grid-template-columns: 1fr;
             }
 
-            .not-included-two-cols { grid-template-columns: 1fr; }
-
+            /* Паддинги больших блоков */
             .price-formula-box, .save-box, .docs-box, .learn-box,
             .pains-box, .compare-box, .savings-box, .guarantees-box,
             .steps-box, .stage-box, .control-info-box, .total-box, .final-card {
-                padding: 28px 20px;
+                padding: 26px 18px;
+                border-radius: 18px;
             }
 
+            /* Бейджи больших блоков */
             .price-formula-box::before, .save-box::before, .docs-box::before,
             .learn-box::before, .pains-title, .compare-box::before,
             .savings-box::before, .guarantees-box::before, .steps-box::before,
             .stage-box::before, .control-info-box::before, .total-box::before {
-                left: 20px;
-                font-size: 0.75rem;
-                padding: 5px 14px;
+                left: 14px;
+                font-size: 0.7rem;
+                padding: 4px 12px;
+                letter-spacing: 1px;
+                top: -13px;
             }
 
-            .price-formula-visual { flex-direction: column; gap: 12px; padding: 20px; }
-            .formula-eq { transform: rotate(90deg); }
+            /* Формула стоимости */
+            .price-formula-visual {
+                flex-direction: column;
+                gap: 10px;
+                padding: 18px 14px;
+            }
+            .formula-eq { transform: rotate(90deg); font-size: 1.4rem; }
+            .formula-item { font-size: 1rem; }
+            .formula-item .num { width: 28px; height: 28px; font-size: 0.9rem; }
+            .formula-highlight { font-size: 1rem; padding: 6px 16px; }
 
+            /* Определение */
+            .definition-box, .industry-box {
+                padding: 20px 18px;
+                border-radius: 16px;
+            }
+            .definition-box-text { font-size: 1rem; }
+
+            /* ХО */
+            .ho-col { padding: 22px 18px; border-radius: 18px; }
+            .ho-col-title { font-size: 1.05rem; padding-bottom: 12px; margin-bottom: 16px; }
+            .ho-list li { font-size: 0.98rem; padding-left: 30px; }
+            .ho-list li strong { font-size: 0.95rem; }
+            .ho-list li span { font-size: 0.88rem; }
+
+            /* Docs */
+            .docs-item { padding: 18px 16px; }
+            .docs-item-title { font-size: 1rem; }
+            .docs-item-list li { font-size: 0.93rem; }
+
+            /* Save */
+            .save-text { font-size: 1rem; }
+            .save-rules li { font-size: 0.95rem; padding: 12px 14px; }
+
+            /* Learn */
+            .learn-box-title { font-size: 1.1rem; }
+            .learn-text { font-size: 1rem; }
+            .learn-list li { font-size: 0.95rem; padding: 12px 14px; }
+            .learn-warning { font-size: 0.92rem; padding: 14px 16px; }
+
+            /* Примеры */
+            .examples-title { font-size: 1.15rem; }
+            .example-card { padding: 20px 18px; }
+            .example-title { font-size: 1rem; }
+            .example-text { font-size: 0.95rem; }
+
+            /* Калькулятор */
+            .calc-col { padding: 22px 18px; border-radius: 18px; }
+            .calc-col-title { font-size: 1.05rem; padding-bottom: 12px; margin-bottom: 16px; }
+            .op-row { padding: 16px 14px; border-radius: 14px; }
+            .op-name { font-size: 0.95rem; }
+            .op-value { font-size: 1.05rem; padding: 4px 12px; min-width: 60px; }
+            .range-minmax { font-size: 0.7rem; }
+
+            input[type="range"] { height: 12px; }
+            input[type="range"]::-webkit-slider-thumb { width: 32px; height: 32px; }
+
+            .mode-switch {
+                flex-direction: row;
+                gap: 6px;
+                padding: 3px;
+            }
+            .mode-btn {
+                font-size: 0.8rem;
+                padding: 10px 10px;
+                min-height: 44px;
+            }
+
+            /* Итог */
+            .total-rows { gap: 10px; }
+            .total-row { padding: 10px 0; gap: 8px; }
+            .total-row .tr-label { font-size: 0.95rem; }
+            .total-row .tr-value { font-size: 1.1rem; }
+            .total-final {
+                padding: 18px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .total-final-value { font-size: 2rem; }
+            .total-final-label { font-size: 1rem; }
+
+            /* Control info */
+            .control-info-title { font-size: 1.1rem; }
+            .control-info-text { font-size: 1rem; }
+            .control-info-list li { font-size: 0.95rem; padding: 12px 14px; }
+            .control-info-warning { font-size: 0.95rem; }
+
+            /* Тарифные сетки */
+            .tariff-table-title, .control-table-title { font-size: 1.05rem; }
+            .tariff-grid { grid-template-columns: 1fr 1fr; }
+            .tariff-item { padding: 12px 14px; font-size: 0.9rem; }
+            .tariff-range { font-size: 0.85rem; }
+            .tariff-price { font-size: 0.9rem; }
+            .control-grid { grid-template-columns: 1fr; }
+            .control-item { padding: 12px 14px; }
+
+            /* Риски и решения */
+            .pains-col { padding: 20px 18px; }
+            .pains-col-title { font-size: 0.9rem; }
+            .pains-list li strong { font-size: 0.95rem; }
+            .pains-list li span { font-size: 0.88rem; }
+
+            /* Сравнение */
+            .compare-card { padding: 22px 18px; }
+            .compare-card-title { font-size: 1.05rem; }
+            .compare-list li { font-size: 0.92rem; }
+            .compare-total { padding: 14px 16px; }
+            .compare-total .t-value { font-size: 1.5rem; }
+
+            /* Экономия */
+            .savings-main {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .savings-year { text-align: left; }
             .savings-month .s-value { font-size: 2rem; }
             .savings-year .s-value { font-size: 1.6rem; }
+            .benefits-section-title { font-size: 0.95rem; }
 
+            /* Гарантии */
+            .guarantees-title, .steps-title, .stage-title { font-size: 1.1rem; }
+            .guarantee-card { padding: 18px 16px; }
+
+            /* Этапы */
+            .step-item { padding: 16px 14px; gap: 12px; }
+            .step-num { width: 36px; height: 36px; font-size: 1rem; }
+            .step-title { font-size: 0.95rem; }
+            .step-text { font-size: 0.88rem; }
+
+            /* Финальная карточка */
+            .final-card-title { font-size: 1.2rem; }
             .final-price-value { font-size: 2rem; }
+            .final-list li { font-size: 0.95rem; }
+            .contact-value { font-size: 0.95rem; }
 
-            .reports-table { font-size: 0.9rem; }
-            .reports-table thead th, .reports-table tbody td { padding: 10px 12px; }
-            .reports-table tbody td:last-child { white-space: normal; }
+            /* Таблица начала сотрудничества — карточки */
+            .stage-table thead { display: none; }
+            .stage-table, .stage-table tbody, .stage-table tr, .stage-table td {
+                display: block;
+                width: 100%;
+            }
+            .stage-table tr {
+                background: #f8fafc;
+                border-radius: 14px;
+                padding: 16px 18px;
+                margin-bottom: 12px;
+                border: 1px solid #e9edf4;
+            }
+            .stage-table tbody td {
+                padding: 0;
+                border: none;
+                font-size: 0.95rem;
+                color: #1e293b;
+                line-height: 1.5;
+            }
+            .stage-table tbody td:first-child {
+                color: var(--brand-red);
+                font-size: 0.85rem;
+                font-weight: 800;
+                text-align: left;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+            }
 
-            .stage-table { font-size: 0.9rem; }
-            .stage-table thead th, .stage-table tbody td { padding: 10px 12px; }
+            /* Таблицы отчётности — карточки */
+            .reports-table thead { display: none; }
+            .reports-table, .reports-table tbody, .reports-table tr, .reports-table td {
+                display: block;
+                width: 100%;
+            }
+            .reports-table tr {
+                background: #ffffff;
+                border: 1px solid #e9edf4;
+                border-radius: 12px;
+                padding: 14px 16px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            }
+            .reports-table tbody td {
+                padding: 0;
+                border: none;
+                text-align: left !important;
+                font-size: 0.95rem;
+                line-height: 1.5;
+                margin-bottom: 6px;
+            }
+            .reports-table tbody td:last-child {
+                margin-bottom: 0;
+                color: #475569;
+                font-weight: 600;
+            }
+            .reports-table tbody td:first-child {
+                font-weight: 700;
+                color: var(--brand-navy);
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px dashed #e2e8f0;
+            }
+            .report-badge { font-size: 0.75rem; padding: 3px 10px; }
+
+            .report-group-title { font-size: 0.85rem; margin-bottom: 10px; }
+
+            /* Убираем горизонтальный скролл */
+            body, .main, .tab-panel, .card, .calc-col, .calc-grid {
+                overflow-x: hidden;
+            }
+
+            /* Сетки внутри карточек */
+            .not-included-two-cols { grid-template-columns: 1fr; gap: 12px; }
+            .benefits-subgrid { grid-template-columns: 1fr; }
+        }
+
+        /* Очень маленькие экраны */
+        @media (max-width: 380px) {
+            html { font-size: 14px; }
+            .panel-header h1 { font-size: 1.25rem; }
+            .mobile-logo-text { font-size: 0.7rem; }
+            .mobile-logo-text .num { font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== МОБИЛЬНЫЙ ХЕДЕР (только на телефоне) ===== -->
+    <div class="mobile-header">
+        <div class="mobile-logo">
+            <div class="mobile-logo-text">
+                <span class="num">1С</span>:БухОбслуживание
+            </div>
+        </div>
+        <button class="burger-btn" id="burgerBtn" aria-label="Меню">☰</button>
+    </div>
+
     <div class="layout">
 
         <!-- ===== САЙДБАР ===== -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
                     <div class="brand-text-logo">
@@ -2604,32 +2547,32 @@
                         <div class="benefit-card">
                             <div class="benefit-icon">💰</div>
                             <div class="benefit-title">Экономия</div>
-                            <div class="benefit-text">Дешевле штатного бухгалтера на <strong>27 466 ₽/мес</strong>. Не платите зарплату, налоги, взносы, за рабочее место и ПО.</div>
+                            <div class="benefit-text">Дешевле штатного бухгалтера на <strong>27 466 ₽/мес</strong>.</div>
                         </div>
                         <div class="benefit-card">
                             <div class="benefit-icon">👥</div>
                             <div class="benefit-title">Команда экспертов</div>
-                            <div class="benefit-text">Бухгалтер-куратор, специалист по зарплате и кадрам, налоговый эксперт. Если кто-то в отпуске — работа не остановится.</div>
+                            <div class="benefit-text">Бухгалтер-куратор, специалист по зарплате и кадрам, налоговый эксперт.</div>
                         </div>
                         <div class="benefit-card">
                             <div class="benefit-icon">🛡️</div>
                             <div class="benefit-title">Ответственность</div>
-                            <div class="benefit-text">Штрафы и пени по нашей вине — <strong>компенсируем</strong>. Прописано в договоре. Страхование на 2 000 000 ₽.</div>
+                            <div class="benefit-text">Штрафы и пени по нашей вине — <strong>компенсируем</strong>. Страхование на 2 000 000 ₽.</div>
                         </div>
                         <div class="benefit-card">
                             <div class="benefit-icon">📱</div>
                             <div class="benefit-title">Доступ 24/7</div>
-                            <div class="benefit-text">Облачная 1С, мобильное приложение, личный кабинет. Все документы и учётная база — под рукой.</div>
+                            <div class="benefit-text">Облачная 1С, мобильное приложение, личный кабинет.</div>
                         </div>
                         <div class="benefit-card">
                             <div class="benefit-icon">⚖️</div>
                             <div class="benefit-title">Экспертиза по ОСНО</div>
-                            <div class="benefit-text">НДС, налог на прибыль, имущество — без ошибок. Контроль закрытия месяца и распределения входного НДС.</div>
+                            <div class="benefit-text">НДС, налог на прибыль, имущество — без ошибок.</div>
                         </div>
                         <div class="benefit-card">
                             <div class="benefit-icon">🔒</div>
                             <div class="benefit-title">Конфиденциальность</div>
-                            <div class="benefit-text">Подписываем NDA. Данные хранятся в защищённых дата-центрах на территории РФ.</div>
+                            <div class="benefit-text">Подписываем NDA. Данные в защищённых дата-центрах РФ.</div>
                         </div>
                     </div>
                 </div>
@@ -2652,35 +2595,26 @@
                         <span><span class="icon">🏛</span>О компании 1С:БухОбслуживание</span>
                     </div>
 
-                    <p style="font-size: 1.1rem; color: #334155; line-height: 1.65; margin-bottom: 22px;">
+                    <p style="font-size: 1.05rem; color: #334155; line-height: 1.65; margin-bottom: 22px;">
                         Фирма <strong>«1С»</strong> основана в 1991 году. Специализируется на разработке,
                         дистрибьюции и поддержке программ делового назначения. Из собственных разработок
                         наиболее известны программы системы <strong>«1С:Предприятие»</strong>.
                     </p>
-                    <p style="font-size: 1.1rem; color: #334155; line-height: 1.65; margin-bottom: 22px;">
+                    <p style="font-size: 1.05rem; color: #334155; line-height: 1.65; margin-bottom: 22px;">
                         <strong>«1С:БухОбслуживание. Облачная бухгалтерия»</strong> — партнёр фирмы 1С,
                         оказывающий бухгалтерские услуги малому бизнесу под маркой «1С:БухОбслуживание»
                         по единому стандарту и технологии, разработанным в фирме 1С.
-                        Это позволяет контролировать качество услуг и минимизировать количество ошибок
-                        в расчётах, кадровом учёте и отчётности.
                     </p>
 
                     <div style="display: flex; flex-wrap: wrap; gap: 12px;">
                         <div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 2px solid #e9edf4; border-radius: 14px; padding: 14px 20px; font-size: 1rem; font-weight: 600; color: var(--brand-navy);">
-                            <span style="font-size: 1.3rem;">👥</span>
-                            <span>56 000+ клиентов</span>
+                            <span style="font-size: 1.3rem;">👥</span><span>56 000+ клиентов</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 2px solid #e9edf4; border-radius: 14px; padding: 14px 20px; font-size: 1rem; font-weight: 600; color: var(--brand-navy);">
-                            <span style="font-size: 1.3rem;">📐</span>
-                            <span>Единый стандарт 1С</span>
+                            <span style="font-size: 1.3rem;">📐</span><span>Единый стандарт 1С</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 2px solid #e9edf4; border-radius: 14px; padding: 14px 20px; font-size: 1rem; font-weight: 600; color: var(--brand-navy);">
-                            <span style="font-size: 1.3rem;">🔍</span>
-                            <span>Аудит качества</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 2px solid #e9edf4; border-radius: 14px; padding: 14px 20px; font-size: 1rem; font-weight: 600; color: var(--brand-navy);">
-                            <span style="font-size: 1.3rem;">🏆</span>
-                            <span>Сертифицированные бухгалтеры</span>
+                            <span style="font-size: 1.3rem;">🔍</span><span>Аудит качества</span>
                         </div>
                     </div>
                 </div>
@@ -2708,62 +2642,62 @@
                         <div class="service-card">
                             <div class="service-icon">☁️</div>
                             <div class="service-title">1С в облаке</div>
-                            <div class="service-text">1С:Бухгалтерия 8 ПРОФ. Доступ через интернет и мобильное приложение. Покупать 1С не нужно. <strong>Обновляется автоматически.</strong> Резервное копирование — еженедельно.</div>
+                            <div class="service-text">1С:Бухгалтерия 8 ПРОФ. <strong>Обновляется автоматически.</strong> Резервное копирование — еженедельно.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">🔧</div>
                             <div class="service-title">Сервисы 1С</div>
-                            <div class="service-text">1С:Контрагент, 1С:Сверка, 1С:ДиректБанк, 1С-Отчётность — встроены в тариф.</div>
+                            <div class="service-text">1С:Контрагент, 1С:Сверка, 1С:ДиректБанк, 1С-Отчётность.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">📊</div>
                             <div class="service-title">Ведение учёта</div>
-                            <div class="service-text">Учёт реализации, покупок, ГСМ, запчастей, амортизации транспорта. Сбор и контроль первичных документов.</div>
+                            <div class="service-text">Учёт реализации, покупок, ГСМ, запчастей, амортизации транспорта.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">⚖️</div>
                             <div class="service-title">Расчёт налогов (ОСНО)</div>
-                            <div class="service-text"><strong>НДС 22%</strong>, налог на прибыль, налог на имущество. Контроль закрытия месяца: распределение входного НДС, амортизация, резервы.</div>
+                            <div class="service-text"><strong>НДС 22%</strong>, налог на прибыль, налог на имущество. Контроль закрытия месяца.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">👩‍💼</div>
                             <div class="service-title">Выделенный бухгалтер</div>
-                            <div class="service-text">Персональный бухгалтер, который знает специфику грузоперевозок. Ведёт ваш учёт, отвечает на вопросы и контролирует сроки.</div>
+                            <div class="service-text">Персональный бухгалтер, который знает специфику грузоперевозок.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">👥</div>
                             <div class="service-title">Кадровый учёт</div>
-                            <div class="service-text">Приём, увольнение, отпуска, больничные, табели, штатное расписание. <strong>1 сотрудник включён в тариф.</strong> Сверх лимита — доп. услуга.</div>
+                            <div class="service-text"><strong>1 сотрудник включён в тариф.</strong> Сверх лимита — доп. услуга.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">💰</div>
                             <div class="service-title">Расчёт зарплаты</div>
-                            <div class="service-text">2 раза в месяц: аванс и основная выплата. Взносы, расчётные листки, платёжки. <strong>1 сотрудник включён в тариф.</strong> Сверх лимита — доп. услуга.</div>
+                            <div class="service-text">2 раза в месяц. <strong>1 сотрудник в тарифе.</strong> Сверх — доп. услуга.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">📤</div>
                             <div class="service-title">Отчётность</div>
-                            <div class="service-text">Все декларации и отчёты в ФНС, СФР, Росстат — через 1С-Отчётность. В срок, без штрафов.</div>
+                            <div class="service-text">Все декларации в ФНС, СФР, Росстат — через 1С-Отчётность.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">📁</div>
                             <div class="service-title">Хранение данных</div>
-                            <div class="service-text">Данные хранятся на серверах 1С в дата-центре на территории РФ, под надёжной защитой. Доступ — строго по ролям.</div>
+                            <div class="service-text">На серверах 1С в дата-центре РФ, под надёжной защитой.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">💬</div>
                             <div class="service-title">Консультации</div>
-                            <div class="service-text">Устные консультации по бухгалтерскому и налоговому учёту — до 30 минут каждая.</div>
+                            <div class="service-text">Устные консультации по учёту — до 30 минут каждая.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">📱</div>
                             <div class="service-title">Личный кабинет</div>
-                            <div class="service-text">Мобильное приложение, чат с бухгалтером, задачи, фото документов, журнал работ.</div>
+                            <div class="service-text">Мобильное приложение, чат с бухгалтером, задачи, фото.</div>
                         </div>
                         <div class="service-card">
                             <div class="service-icon">🔐</div>
                             <div class="service-title">Ответственность</div>
-                            <div class="service-text">Штрафы и пени по нашей вине — компенсируем. Страхование ответственности на 2 000 000 ₽.</div>
+                            <div class="service-text">Штрафы по нашей вине — компенсируем. Страхование 2 000 000 ₽.</div>
                         </div>
                     </div>
                 </div>
@@ -2781,10 +2715,10 @@
                                 <ul class="not-included-list">
                                     <li>Восстановление учёта</li>
                                     <li>Составление сложных договоров</li>
-                                    <li>Сотрудники сверх лимита — больше 1 человека</li>
+                                    <li>Сотрудники сверх лимита</li>
                                 </ul>
                                 <ul class="not-included-list">
-                                    <li>Разовое кадровое мероприятие (приём, увольнение)</li>
+                                    <li>Разовое кадровое мероприятие</li>
                                     <li>Путевые листы</li>
                                     <li>Электронные ТТН</li>
                                 </ul>
@@ -2794,7 +2728,6 @@
 
                     <div class="not-included-note">
                         <strong>Важно:</strong> дополнительные услуги оплачиваются отдельно — по прейскуранту.
-                        Стоимость согласовывается заранее. Мы не выставляем счёт без вашего подтверждения.
                     </div>
                 </div>
             </section>
@@ -2819,9 +2752,8 @@
                     </div>
 
                     <p class="price-formula-text">
-                        Стоимость обслуживания по тарифу «Комплексный сервис» рассчитывается
-                        <strong>исходя из количества хозяйственных операций (ХО) в месяц</strong>.
-                        Чем больше операций — тем выше тариф.
+                        Стоимость обслуживания рассчитывается
+                        <strong>исходя из количества ХО в месяц</strong>.
                         Чем больше операций вы вводите сами — тем меньше платите.
                     </p>
 
@@ -2843,12 +2775,12 @@
                 <div class="definition-box">
                     <div class="definition-box-title">
                         <span>📚</span>
-                        <span>Что такое хозяйственная операция (ХО)</span>
+                        <span>Что такое ХО</span>
                     </div>
                     <p class="definition-box-text">
-                        Хозяйственная операция (ХО) — это факт хозяйственной жизни бизнеса,
-                        который требует отражения в учёте. Простыми словами:
-                        <strong>каждое движение денег или каждый значимый документ = одна ХО</strong>.
+                        Хозяйственная операция — это факт хозяйственной жизни бизнеса,
+                        который требует отражения в учёте.
+                        <strong>Каждое движение денег или значимый документ = одна ХО</strong>.
                     </p>
                 </div>
 
@@ -2856,19 +2788,19 @@
                     <div class="ho-col ho-col-yes">
                         <div class="ho-col-title"><span>✅</span><span>Что считается ХО</span></div>
                         <ul class="ho-list">
-                            <li><strong>Поступления и реализация</strong><span>Оплата от заказчиков перевозок, акты оказанных услуг, накладные</span></li>
-                            <li><strong>Покупки (списания)</strong><span>ГСМ, запчасти, ремонт, лизинг, аренда транспорта, услуги подрядчиков</span></li>
-                            <li><strong>Авансовый отчёт</strong><span>Отчёты водителей по топливу, командировочным, запчастям</span></li>
-                            <li><strong>Касса</strong><span>Вся розничная выручка за месяц = 1 ХО, независимо от количества чеков</span></li>
+                            <li><strong>Поступления и реализация</strong><span>Оплата от заказчиков, акты, накладные</span></li>
+                            <li><strong>Покупки (списания)</strong><span>ГСМ, запчасти, ремонт, лизинг</span></li>
+                            <li><strong>Авансовый отчёт</strong><span>Отчёты водителей по топливу</span></li>
+                            <li><strong>Касса</strong><span>Розничная выручка за месяц = 1 ХО</span></li>
                         </ul>
                     </div>
                     <div class="ho-col ho-col-no">
                         <div class="ho-col-title"><span>❌</span><span>Что не считается ХО</span></div>
                         <ul class="ho-list">
-                            <li><strong>Банковские комиссии</strong><span>Загружаются автоматически, без ручного редактирования</span></li>
-                            <li><strong>Операции, введённые клиентом без ошибок</strong><span>Если ввели сами и правильно — не тарифицируется</span></li>
-                            <li><strong>Автозагрузка из банка</strong><span>Выписка подгрузилась сама — не ХО</span></li>
-                            <li><strong>Платёжные поручения на уплату налогов</strong><span>Налоги, сборы, взносы в бюджет</span></li>
+                            <li><strong>Банковские комиссии</strong><span>Загружаются автоматически</span></li>
+                            <li><strong>Операции без ошибок</strong><span>Если ввели сами и правильно</span></li>
+                            <li><strong>Автозагрузка из банка</strong><span>Выписка подгрузилась сама</span></li>
+                            <li><strong>Платёжки на уплату налогов</strong><span>Налоги, сборы, взносы</span></li>
                         </ul>
                     </div>
                 </div>
@@ -2880,7 +2812,7 @@
                     </div>
 
                     <p class="docs-text">
-                        Эти документы <strong>не входят в ХО</strong>. Вы можете выбрать удобный вариант:
+                        Эти документы <strong>не входят в ХО</strong>. Вы можете выбрать:
                     </p>
 
                     <div class="docs-grid">
@@ -2888,8 +2820,8 @@
                             <div class="docs-item-icon">💼</div>
                             <div class="docs-item-title">Мы оформляем</div>
                             <ul class="docs-item-list">
-                                <li>Доп. услуга — оплачивается отдельно</li>
-                                <li>Стоимость по прейскуранту</li>
+                                <li>Доп. услуга</li>
+                                <li>По прейскуранту</li>
                                 <li>Согласовываем заранее</li>
                             </ul>
                         </div>
@@ -2898,28 +2830,26 @@
                             <div class="docs-item-title">Вы оформляете сами</div>
                             <ul class="docs-item-list">
                                 <li>Не входит в тариф</li>
-                                <li>Экономия на стоимости</li>
+                                <li>Экономия</li>
                                 <li>Мы научим, как правильно</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="docs-note">
-                        <strong>Важно:</strong> если оформляете сами без ошибок — стоимость не растёт.
-                        Ошибка, которую исправляет бухгалтер, становится доп. услугой.
+                        <strong>Важно:</strong> ошибка, которую исправляет бухгалтер — становится доп. услугой.
                     </div>
                 </div>
 
                 <div class="save-box">
                     <p class="save-text">
                         <strong>Вводите документы самостоятельно без ошибок</strong> — эти операции
-                        не тарифицируются. Оформляйте путевые листы и ЭТТН сами — это тоже экономия.
-                        Если бухгалтер исправляет ошибку — операция становится ХО.
+                        не тарифицируются.
                     </p>
                     <ul class="save-rules">
-                        <li><span class="num-badge">1</span><span>Вводите документы самостоятельно <strong>без ошибок</strong> — эти операции не тарифицируются.</span></li>
-                        <li><span class="num-badge">2</span><span>Оформляйте путевые листы и ЭТТН сами — это не входит в тариф, экономия.</span></li>
-                        <li><span class="num-badge">3</span><span>Не опаздывайте с передачей документов — не будет допуслуги «Обработка с опозданием».</span></li>
+                        <li><span class="num-badge">1</span><span>Вводите документы <strong>без ошибок</strong> — не тарифицируется.</span></li>
+                        <li><span class="num-badge">2</span><span>Оформляйте путевые и ЭТТН сами — это экономия.</span></li>
+                        <li><span class="num-badge">3</span><span>Не опаздывайте с документами.</span></li>
                     </ul>
                 </div>
 
@@ -2932,15 +2862,15 @@
                     <div class="examples-grid">
                         <div class="example-card">
                             <div class="example-num">Пример 1</div>
-                            <div class="example-title">Сколько ХО в месяц у перевозчика</div>
+                            <div class="example-title">Сколько ХО у перевозчика</div>
                             <div class="example-text">
                                 <ul>
-                                    <li>15 рейсов (реализация) = 15 ХО</li>
-                                    <li>10 покупок (ГСМ, запчасти) = 10 ХО</li>
-                                    <li>2 авансовых отчёта = 2 ХО</li>
+                                    <li>15 рейсов = 15 ХО</li>
+                                    <li>10 покупок = 10 ХО</li>
+                                    <li>2 авансовых = 2 ХО</li>
                                 </ul>
                             </div>
-                            <div class="example-result">Итого ХО: 15 + 10 + 2 = 27</div>
+                            <div class="example-result">Итого: 27 ХО</div>
                         </div>
 
                         <div class="example-card">
@@ -2948,32 +2878,27 @@
                             <div class="example-title">Как сэкономить</div>
                             <div class="example-text">
                                 Если вы сами вводите документы в 1С без ошибок —
-                                эти операции не войдут в тариф. Вы заплатите только за те,
-                                которые обрабатывает бухгалтер.
+                                эти операции не войдут в тариф.
                             </div>
                             <div class="example-result">Экономия на тарифе</div>
                         </div>
 
                         <div class="example-card">
                             <div class="example-num">Пример 3</div>
-                            <div class="example-title">Опоздание с документами</div>
+                            <div class="example-title">Опоздание</div>
                             <div class="example-text">
-                                Предельная дата сдачи документов за май — 5 июня.
-                                Документы принесены 10 июня. Все майские документы,
-                                которые бухгалтер обработает после 5 июня, попадают
-                                под допуслугу «Обработка с опозданием».
+                                Предельная дата — 5 июня. Принесли 10 июня.
+                                Попадает под допуслугу «Обработка с опозданием».
                             </div>
-                            <div class="example-result">Стоимость месяца вырастет</div>
+                            <div class="example-result">Стоимость вырастет</div>
                         </div>
 
                         <div class="example-card">
                             <div class="example-num">Пример 4</div>
                             <div class="example-title">Ошибка клиента</div>
                             <div class="example-text">
-                                Вы сами сформировали документ — УПД, но ошиблись
-                                в сумме или не выбрали договор. Бухгалтер нашёл
-                                ошибку и исправил. Эта операция теперь тарифицируется
-                                как ХО, хотя вы хотели сэкономить.
+                                Сами сформировали УПД с ошибкой. Бухгалтер исправил —
+                                операция стала ХО.
                             </div>
                             <div class="example-result">Операция стала ХО</div>
                         </div>
@@ -2987,8 +2912,8 @@
                     </div>
 
                     <p class="learn-text">
-                        Хотите платить меньше? Вводите документы самостоятельно — без ошибок.
-                        Мы <strong>бесплатно обучим</strong> вас и ваших сотрудников работе в 1С:
+                        Вводите документы самостоятельно — без ошибок.
+                        Мы <strong>бесплатно обучим</strong> вас работе в 1С:
                     </p>
 
                     <ul class="learn-list">
@@ -2999,7 +2924,6 @@
                     </ul>
 
                     <div class="learn-warning">
-                        <strong>Если вводите без ошибок</strong> — эти операции не тарифицируются.
                         <strong>Ошибка</strong>, которую исправляет бухгалтер — становится ХО.
                     </div>
                 </div>
@@ -3014,7 +2938,6 @@
                     </h1>
                     <p class="desc">
                         Настройте параметры — стоимость пересчитается автоматически.
-                        Операции, которые оформляете вы, не входят в тариф.
                     </p>
                 </div>
 
@@ -3063,7 +2986,7 @@
 
                         <div class="cash-box">
                             <span class="cash-icon">💵</span>
-                            <div><strong>Касса</strong> — 1 выгрузка в месяц включена в тариф. Если нужно чаще — доп. услуга.</div>
+                            <div><strong>Касса</strong> — 1 выгрузка в месяц включена в тариф.</div>
                         </div>
                     </div>
 
@@ -3105,7 +3028,7 @@
                             </div>
                             <input type="range" id="opsStaff" min="0" max="100" value="4" step="1">
                             <div class="range-minmax"><span>0</span><span>100</span></div>
-                            <div class="extra-price">Цена: <strong>1 578 ₽ / чел·мес</strong> (1 сотрудник включён в тариф)</div>
+                            <div class="extra-price">Цена: <strong>1 578 ₽ / чел·мес</strong></div>
                         </div>
 
                         <div class="op-row">
@@ -3115,7 +3038,7 @@
                             </div>
                             <input type="range" id="opsHire" min="0" max="100" value="0" step="1">
                             <div class="range-minmax"><span>0</span><span>100</span></div>
-                            <div class="extra-price">Цена: <strong>1 500 ₽ / шт</strong> (приём, увольнение)</div>
+                            <div class="extra-price">Цена: <strong>1 500 ₽ / шт</strong></div>
                         </div>
                     </div>
                 </div>
@@ -3127,7 +3050,7 @@
                             <span class="tr-value" id="totalHo">27</span>
                         </div>
                         <div class="total-row">
-                            <span class="tr-label">Базовый тариф по сетке</span>
+                            <span class="tr-label">Базовый тариф</span>
                             <span class="tr-value" id="totalBase">37 530 ₽</span>
                         </div>
                         <div class="total-row">
@@ -3159,27 +3082,23 @@
                     </div>
 
                     <p class="control-info-text">
-                        Если вы будете <strong>самостоятельно вносить и формировать документы</strong>
-                        в 1С — включается дополнительная услуга
-                        <strong>«Контроль и закрытие месяца»</strong>.
-                        Это связано с тем, что даже при самостоятельном вводе документов
-                        их нужно:
+                        Если вы будете <strong>самостоятельно вносить документы</strong>
+                        в 1С — включается услуга <strong>«Контроль и закрытие месяца»</strong>.
+                        Их нужно:
                     </p>
 
                     <ul class="control-info-list">
                         <li>Собрать в отчётность</li>
-                        <li>Проконтролировать правильность внесения</li>
-                        <li>Проверить корректность бухгалтерских проводок</li>
+                        <li>Проконтролировать правильность</li>
+                        <li>Проверить проводки</li>
                         <li>Закрыть месяц</li>
-                        <li>Перепровести документы массово</li>
+                        <li>Перепровести документы</li>
                         <li>Рассчитать налоговую базу</li>
                     </ul>
 
                     <div class="control-info-warning">
                         Без этого отчётность будет <strong>недостоверной</strong>,
                         а налоги — <strong>рассчитаны с ошибками</strong>.
-                        Стоимость услуги зависит от общей активности бизнеса —
-                        смотрите тарифную сетку ниже.
                     </div>
                 </div>
 
@@ -3194,7 +3113,7 @@
                 <div class="control-table-card">
                     <div class="control-table-title">
                         <span>🎯</span>
-                        <span>Контроль и закрытие месяца — тарифная сетка</span>
+                        <span>Контроль и закрытие месяца</span>
                     </div>
                     <div class="control-grid" id="controlGrid"></div>
                 </div>
@@ -3216,18 +3135,18 @@
                 <div class="pains-box">
                     <div class="pains-title">
                         <span>🎯</span>
-                        <span>РИСКИ В УЧЁТЕ И НАШИ РЕШЕНИЯ</span>
+                        <span>РИСКИ И РЕШЕНИЯ</span>
                     </div>
 
                     <div class="pains-grid">
                         <div class="pains-col pains-col-risk">
                             <div class="pains-col-title"><span>⚠️</span><span>Риск</span></div>
                             <ul class="pains-list">
-                                <li><strong>Ошибки в НДС 22%</strong><span>доначисления, штрафы, блокировка счёта</span></li>
+                                <li><strong>Ошибки в НДС 22%</strong><span>доначисления, штрафы</span></li>
                                 <li><strong>Просрочка отчётности</strong><span>пени, вопросы от налоговой</span></li>
-                                <li><strong>Ошибки в расчёте ЗП</strong><span>претензии сотрудников, пересчёты</span></li>
-                                <li><strong>Путаница с ГСМ и ТТН</strong><span>налоговая не принимает расходы</span></li>
-                                <li><strong>Нет картины по деньгам</strong><span>не видно долгов и остатков</span></li>
+                                <li><strong>Ошибки в расчёте ЗП</strong><span>претензии сотрудников</span></li>
+                                <li><strong>Путаница с ГСМ и ТТН</strong><span>налоговая не принимает</span></li>
+                                <li><strong>Нет картины по деньгам</strong><span>не видно долгов</span></li>
                             </ul>
                         </div>
 
@@ -3235,10 +3154,10 @@
                             <div class="pains-col-title"><span>✅</span><span>Решение</span></div>
                             <ul class="pains-list">
                                 <li><strong>Контроль входного НДС</strong><span>проверка каждой декларации</span></li>
-                                <li><strong>График сдачи + напоминания</strong><span>1С-Отчётность, всегда в срок</span></li>
-                                <li><strong>Расчёт ЗП 2 раза в месяц</strong><span>проверка взносов и НДФЛ</span></li>
+                                <li><strong>График сдачи</strong><span>1С-Отчётность, всегда в срок</span></li>
+                                <li><strong>Расчёт ЗП 2 раза в месяц</strong><span>проверка взносов</span></li>
                                 <li><strong>Учёт ГСМ, путевых, ЭТТН</strong><span>расходы принимаются</span></li>
-                                <li><strong>Отчёты по остаткам и долгам</strong><span>полная картина по деньгам</span></li>
+                                <li><strong>Отчёты по остаткам</strong><span>полная картина</span></li>
                             </ul>
                         </div>
                     </div>
@@ -3256,8 +3175,6 @@
                                 <li><span class="c-label">Налоги и взносы</span><span class="c-value">21 500 ₽</span></li>
                                 <li><span class="c-label">1С и лицензии</span><span class="c-value">55 000 ₽/год</span></li>
                                 <li><span class="c-label">Антивирусы, серверы</span><span class="c-value">+</span></li>
-                                <li><span class="c-label">ДиректБанк, отчётность</span><span class="c-value">+</span></li>
-                                <li><span class="c-label">Сверка с контрагентами</span><span class="c-value">+</span></li>
                                 <li><span class="c-label">Риски и штрафы</span><span class="c-value">на вас</span></li>
                                 <li><span class="c-label">Отпуск, больничный</span><span class="c-value">оплачиваете</span></li>
                             </ul>
@@ -3273,13 +3190,11 @@
                         <div class="compare-card compare-card-1c">
                             <div class="compare-card-title"><span class="c-icon">🏢</span><span>1С:БухОбслуживание</span></div>
                             <ul class="compare-list">
-                                <li><span class="c-label">Зарплата</span><span class="c-value c-included">входит в тариф</span></li>
-                                <li><span class="c-label">Налоги и взносы</span><span class="c-value c-included">входит в тариф</span></li>
-                                <li><span class="c-label">1С и лицензии</span><span class="c-value c-included">входит в тариф</span></li>
+                                <li><span class="c-label">Зарплата</span><span class="c-value c-included">входит</span></li>
+                                <li><span class="c-label">Налоги и взносы</span><span class="c-value c-included">входит</span></li>
+                                <li><span class="c-label">1С и лицензии</span><span class="c-value c-included">входит</span></li>
                                 <li><span class="c-label">Антивирусы, серверы</span><span class="c-value c-included">не нужно</span></li>
-                                <li><span class="c-label">ДиректБанк, отчётность</span><span class="c-value c-included">входит в тариф</span></li>
-                                <li><span class="c-label">Сверка с контрагентами</span><span class="c-value c-included">входит в тариф</span></li>
-                                <li><span class="c-label">Риски и штрафы</span><span class="c-value c-included">на нас по договору</span></li>
+                                <li><span class="c-label">Риски и штрафы</span><span class="c-value c-included">на нас</span></li>
                                 <li><span class="c-label">Отпуск, больничный</span><span class="c-value c-included">не касается</span></li>
                             </ul>
                             <div class="compare-total">
@@ -3312,28 +3227,28 @@
                             <div class="b-icon">👥</div>
                             <div class="b-content">
                                 <div class="b-title">Команда экспертов</div>
-                                <div class="b-text">Вместо одного бухгалтера — куратор, зарплатник, налоговый консультант</div>
+                                <div class="b-text">Вместо одного бухгалтера</div>
                             </div>
                         </div>
                         <div class="benefit-item">
                             <div class="b-icon">🛡️</div>
                             <div class="b-content">
-                                <div class="b-title">Ответственность по договору</div>
-                                <div class="b-text">Штрафы и пени по нашей вине — компенсируем. Прописано в договоре</div>
+                                <div class="b-title">Ответственность</div>
+                                <div class="b-text">Штрафы компенсируем</div>
                             </div>
                         </div>
                         <div class="benefit-item">
                             <div class="b-icon">🏖️</div>
                             <div class="b-content">
                                 <div class="b-title">Отпуска и больничные</div>
-                                <div class="b-text">Не ваша забота. Работа не останавливается — за вас всегда есть кому вести учёт</div>
+                                <div class="b-text">Не ваша забота</div>
                             </div>
                         </div>
                         <div class="benefit-item">
                             <div class="b-icon">📱</div>
                             <div class="b-content">
                                 <div class="b-title">Доступ 24/7</div>
-                                <div class="b-text">Облачная 1С, мобильное приложение, личный кабинет. Всё под рукой</div>
+                                <div class="b-text">Облачная 1С, мобильное приложение</div>
                             </div>
                         </div>
                     </div>
@@ -3354,38 +3269,38 @@
 
                 <div class="guarantees-box">
                     <div class="guarantees-title">🛡️ Наши гарантии</div>
-                    <div class="guarantees-subtitle">Всё прописано в договоре — от ответственности до конфиденциальности</div>
+                    <div class="guarantees-subtitle">Всё прописано в договоре</div>
 
                     <div class="guarantees-grid">
                         <div class="guarantee-card">
                             <div class="guarantee-icon">💰</div>
-                            <div class="guarantee-title">Страхование ответственности</div>
-                            <div class="guarantee-text">Наша ответственность застрахована на <strong>2 000 000 ₽</strong>. Покрывает возможные ошибки в учёте.</div>
+                            <div class="guarantee-title">Страхование</div>
+                            <div class="guarantee-text">Ответственность застрахована на <strong>2 000 000 ₽</strong>.</div>
                         </div>
                         <div class="guarantee-card">
                             <div class="guarantee-icon">🛡️</div>
                             <div class="guarantee-title">Штрафы по нашей вине</div>
-                            <div class="guarantee-text">Все пени и штрафы, возникшие по нашей вине — <strong>компенсируем полностью</strong>. Прописано в договоре.</div>
+                            <div class="guarantee-text"><strong>Компенсируем полностью</strong>. Прописано в договоре.</div>
                         </div>
                         <div class="guarantee-card">
                             <div class="guarantee-icon">📜</div>
                             <div class="guarantee-title">Всё в договоре</div>
-                            <div class="guarantee-text">Состав услуг, сроки, ответственность и стоимость — зафиксированы в договоре-оферте.</div>
+                            <div class="guarantee-text">Состав услуг, сроки, ответственность — зафиксированы.</div>
                         </div>
                         <div class="guarantee-card">
                             <div class="guarantee-icon">🔒</div>
                             <div class="guarantee-title">Конфиденциальность</div>
-                            <div class="guarantee-text">Подписываем <strong>NDA</strong>. Данные хранятся на серверах 1С в дата-центре РФ. Доступ — строго по ролям.</div>
+                            <div class="guarantee-text"><strong>NDA</strong>. Данные на серверах 1С в дата-центре РФ.</div>
                         </div>
                         <div class="guarantee-card">
                             <div class="guarantee-icon">📱</div>
                             <div class="guarantee-title">Доступ 24/7</div>
-                            <div class="guarantee-text">Облачная 1С, мобильное приложение, личный кабинет. Все документы и база — под рукой.</div>
+                            <div class="guarantee-text">Облачная 1С, мобильное приложение, личный кабинет.</div>
                         </div>
                         <div class="guarantee-card">
                             <div class="guarantee-icon">👥</div>
-                            <div class="guarantee-title">Команда, а не один человек</div>
-                            <div class="guarantee-text">Если кто-то в отпуске или на больничном — работа не останавливается. За вас всегда есть кому вести учёт.</div>
+                            <div class="guarantee-title">Команда</div>
+                            <div class="guarantee-text">Если кто-то в отпуске — работа не останавливается.</div>
                         </div>
                     </div>
                 </div>
@@ -3399,49 +3314,49 @@
                             <div class="step-num">1</div>
                             <div class="step-content">
                                 <div class="step-title">Уровень сервиса</div>
-                                <div class="step-text">Прописываем услуги тарифа и доп. услуги, фиксируем состав отчётности, даты, зоны ответственности.</div>
+                                <div class="step-text">Прописываем услуги тарифа и доп. услуги, фиксируем состав отчётности.</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-num">2</div>
                             <div class="step-content">
                                 <div class="step-title">Доступ к программам</div>
-                                <div class="step-text">1С:Бухгалтерия 8 ПРОФ, сервисы: 1С:Сверка, 1С-Отчётность, 1С:ДиректБанк, 1С:Контрагент.</div>
+                                <div class="step-text">1С:Бухгалтерия 8 ПРОФ, 1С:Сверка, 1С-Отчётность, 1С:ДиректБанк, 1С:Контрагент.</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-num">3</div>
                             <div class="step-content">
                                 <div class="step-title">Ведение учёта</div>
-                                <div class="step-text">Учёт реализации, покупок, ГСМ, запчастей, амортизации транспорта. Контроль первички.</div>
+                                <div class="step-text">Учёт реализации, покупок, ГСМ, запчастей, амортизации транспорта.</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-num">4</div>
                             <div class="step-content">
                                 <div class="step-title">Кадры и зарплата</div>
-                                <div class="step-text">Приём, увольнение, отпуска, больничные, табели. Расчёт ЗП 2 раза в месяц. 1 сотрудник в тарифе.</div>
+                                <div class="step-text">Приём, увольнение, отпуска, больничные, табели. 1 сотрудник в тарифе.</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-num">5</div>
                             <div class="step-content">
                                 <div class="step-title">Налоги и отчётность</div>
-                                <div class="step-text">Расчёт НДС 22%, налога на прибыль, имущества. Сдача отчётности через 1С-Отчётность в срок.</div>
+                                <div class="step-text">НДС 22%, налог на прибыль, имущество. Сдача через 1С-Отчётность.</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-num">6</div>
                             <div class="step-content">
                                 <div class="step-title">Консультации</div>
-                                <div class="step-text">Устные консультации по бухгалтерскому и налоговому учёту — до 30 минут каждая.</div>
+                                <div class="step-text">Устные консультации по учёту — до 30 минут каждая.</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-num">7</div>
                             <div class="step-content">
                                 <div class="step-title">Мобильное приложение</div>
-                                <div class="step-text">Счета, документы, фото, задачи бухгалтеру, журнал объёма работ. Всё с телефона.</div>
+                                <div class="step-text">Счета, документы, фото, задачи бухгалтеру, журнал работ.</div>
                             </div>
                         </div>
                     </div>
@@ -3449,7 +3364,7 @@
 
                 <div class="stage-box">
                     <div class="stage-title">📋 Начало сотрудничества</div>
-                    <div class="stage-subtitle">От оферты до старта работы — пошагово</div>
+                    <div class="stage-subtitle">От оферты до старта работы</div>
 
                     <table class="stage-table">
                         <thead>
@@ -3469,7 +3384,7 @@
                             </tr>
                             <tr>
                                 <td>2.3</td>
-                                <td>Вы оплачиваете гарантийный платёж — стоимость 1 месяца обслуживания. Это акцепт договора. При расторжении сумма идёт в зачёт последнего месяца</td>
+                                <td>Вы оплачиваете гарантийный платёж — стоимость 1 месяца. Это акцепт договора. При расторжении — зачёт последнего месяца</td>
                             </tr>
                             <tr>
                                 <td>2.4</td>
@@ -3505,9 +3420,9 @@
                                 <ul class="final-list">
                                     <li>Ведение учёта ООО на ОСНО «под ключ»</li>
                                     <li>НДС 22%, налог на прибыль, налог на имущество</li>
-                                    <li>Кадры и зарплата: 1 сотрудник включён в тариф</li>
-                                    <li>Оплата по факту операций — платите только за реальные ХО</li>
-                                    <li>Фиксация стоимости после 2 месяцев работы</li>
+                                    <li>Кадры и зарплата: 1 сотрудник в тарифе</li>
+                                    <li>Оплата по факту операций</li>
+                                    <li>Фиксация стоимости через 2 месяца</li>
                                 </ul>
                             </div>
 
@@ -3568,7 +3483,15 @@
     </div>
 
     <script>
-        // ===== НАВИГАЦИЯ =====
+        // ===== БУРГЕР-МЕНЮ =====
+        const burgerBtn = document.getElementById('burgerBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        burgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Закрытие сайдбара при выборе вкладки (мобильный)
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 const targetId = tab.dataset.tab;
@@ -3576,8 +3499,19 @@
                 tab.classList.add('active');
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
                 document.getElementById(targetId).classList.add('active');
+
+                if (window.innerWidth <= 1000) {
+                    sidebar.classList.remove('open');
+                }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
+        });
+
+        // Закрытие сайдбара по клику вне его (мобильный)
+        document.querySelector('.main').addEventListener('click', () => {
+            if (window.innerWidth <= 1000 && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
         });
 
         // ===== ТАРИФНАЯ СЕТКА =====
@@ -3603,13 +3537,7 @@
             { min: 201, max: 300, price: 42000 }
         ];
 
-        const EXTRA_PRICES = {
-            waybill: 400,
-            ttn: 700,
-            staff: 1578,
-            hire: 1500
-        };
-
+        const EXTRA_PRICES = { waybill: 400, ttn: 700, staff: 1578, hire: 1500 };
         const NDS = 0.05;
 
         function formatRub(value) {
@@ -3630,13 +3558,7 @@
             return null;
         }
 
-        const modes = {
-            opsIncome: 'we',
-            opsPurchase: 'we',
-            opsAdvance: 'we',
-            opsWaybill: 'we',
-            opsTtn: 'we'
-        };
+        const modes = { opsIncome: 'we', opsPurchase: 'we', opsAdvance: 'we', opsWaybill: 'we', opsTtn: 'we' };
 
         const sliders = {
             opsIncome: { el: document.getElementById('opsIncome'), val: document.getElementById('opsIncomeVal') },
@@ -3658,11 +3580,8 @@
                 switchBox.querySelectorAll('.mode-btn').forEach(b => {
                     b.classList.remove('active-we', 'active-client');
                 });
-                if (mode === 'we') {
-                    btn.classList.add('active-we');
-                } else {
-                    btn.classList.add('active-client');
-                }
+                if (mode === 'we') btn.classList.add('active-we');
+                else btn.classList.add('active-client');
 
                 calculate();
             });
@@ -3685,17 +3604,10 @@
             sliders.opsStaff.val.textContent = staff;
             sliders.opsHire.val.textContent = hire;
 
-            let hoInTariff = 0;
-            let hoClient = 0;
-
-            if (modes.opsIncome === 'we') hoInTariff += income;
-            else hoClient += income;
-
-            if (modes.opsPurchase === 'we') hoInTariff += purchase;
-            else hoClient += purchase;
-
-            if (modes.opsAdvance === 'we') hoInTariff += advance;
-            else hoClient += advance;
+            let hoInTariff = 0, hoClient = 0;
+            if (modes.opsIncome === 'we') hoInTariff += income; else hoClient += income;
+            if (modes.opsPurchase === 'we') hoInTariff += purchase; else hoClient += purchase;
+            if (modes.opsAdvance === 'we') hoInTariff += advance; else hoClient += advance;
 
             const totalActivity = hoInTariff + hoClient;
             const base = getBaseTariff(hoInTariff);
@@ -3706,15 +3618,11 @@
             extra += staff * EXTRA_PRICES.staff;
             extra += hire * EXTRA_PRICES.hire;
 
-            let controlPrice = 0;
-            let controlRange = null;
+            let controlPrice = 0, controlRange = null;
             const hasClientOps = hoClient > 0;
             if (hasClientOps && totalActivity >= 11) {
                 const control = getControlPrice(totalActivity);
-                if (control) {
-                    controlPrice = control.price;
-                    controlRange = control.range;
-                }
+                if (control) { controlPrice = control.price; controlRange = control.range; }
             }
 
             const monthlyWithoutNds = base.price + extra + controlPrice;
@@ -3758,10 +3666,7 @@
             TARIFF_GRID.forEach(row => {
                 const item = document.createElement('div');
                 item.className = 'tariff-item';
-                item.innerHTML = `
-                    <span class="tariff-range">${row.min}–${row.max} ХО</span>
-                    <span class="tariff-price">${formatRub(row.price)}</span>
-                `;
+                item.innerHTML = `<span class="tariff-range">${row.min}–${row.max} ХО</span><span class="tariff-price">${formatRub(row.price)}</span>`;
                 grid.appendChild(item);
             });
         }
@@ -3772,10 +3677,7 @@
             CONTROL_GRID.forEach(row => {
                 const item = document.createElement('div');
                 item.className = 'control-item';
-                item.innerHTML = `
-                    <span class="control-range">${row.min}–${row.max} ХО</span>
-                    <span class="control-price">${formatRub(row.price)}</span>
-                `;
+                item.innerHTML = `<span class="control-range">${row.min}–${row.max} ХО</span><span class="control-price">${formatRub(row.price)}</span>`;
                 grid.appendChild(item);
             });
         }
