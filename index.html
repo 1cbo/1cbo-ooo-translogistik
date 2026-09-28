@@ -40,7 +40,7 @@
 
         /* ===== САЙДБАР ===== */
         .sidebar {
-            width: 300px;
+            width: 320px;
             background: linear-gradient(180deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
             color: white;
             padding: 24px 20px 32px;
@@ -153,6 +153,21 @@
             flex-shrink: 0;
         }
 
+        .nav-tab .nav-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            line-height: 1.2;
+        }
+
+        .nav-tab .nav-text small {
+            font-size: 0.7rem;
+            font-weight: 500;
+            opacity: 0.7;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
         .nav-tab:hover {
             background: rgba(255, 255, 255, 0.08);
             color: white;
@@ -169,6 +184,10 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
+        .nav-tab.active .nav-text small {
+            opacity: 0.9;
+        }
+
         .sidebar-footer {
             border-top: 1px solid rgba(255, 255, 255, 0.15);
             padding-top: 18px;
@@ -178,7 +197,7 @@
             text-align: center;
         }
 
-        /* ===== БУРГЕР (только мобильные) ===== */
+        /* ===== БУРГЕР (мобильный) ===== */
         .mobile-header {
             display: none;
             background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
@@ -1968,7 +1987,6 @@
         /* ============= МОБИЛЬНАЯ АДАПТАЦИЯ =============== */
         /* ================================================== */
 
-        /* Планшеты и меньше */
         @media (max-width: 1000px) {
             html { font-size: 16px; }
 
@@ -2003,6 +2021,9 @@
                 height: 32px;
                 font-size: 1rem;
             }
+            .nav-tab .nav-text small {
+                font-size: 0.75rem;
+            }
             .sidebar-footer { display: none; }
             .main { padding: 24px 20px 40px; }
 
@@ -2019,7 +2040,6 @@
             .examples-grid { grid-template-columns: 1fr; }
         }
 
-        /* Телефоны */
         @media (max-width: 700px) {
             html { font-size: 15px; }
 
@@ -2032,21 +2052,14 @@
             .main { padding: 20px 14px 32px; }
 
             .panel-header { margin-bottom: 20px; }
-            .panel-header h1 {
-                font-size: 1.4rem;
-                gap: 10px;
-            }
-            .panel-header h1 .tag {
-                font-size: 0.75rem;
-                padding: 4px 12px;
-            }
+            .panel-header h1 { font-size: 1.4rem; gap: 10px; }
+            .panel-header h1 .tag { font-size: 0.75rem; padding: 4px 12px; }
             .panel-header .desc { font-size: 0.95rem; }
 
             .client-name-big { font-size: 1.3rem; }
             .client-subtitle { font-size: 0.9rem; }
 
             .badge-item { font-size: 0.75rem; padding: 5px 12px; }
-
             .stat-row { font-size: 0.95rem; padding: 12px 0; }
 
             .card {
@@ -2057,13 +2070,11 @@
             .card-title { font-size: 1.05rem; margin-bottom: 14px; padding-bottom: 12px; }
             .card-title .badge { font-size: 0.7rem; padding: 3px 10px; }
 
-            /* Сетки в одну колонку */
             .services-grid, .benefits-grid, .guarantees-grid,
             .not-included-two-cols, .docs-grid {
                 grid-template-columns: 1fr;
             }
 
-            /* Паддинги больших блоков */
             .price-formula-box, .save-box, .docs-box, .learn-box,
             .pains-box, .compare-box, .savings-box, .guarantees-box,
             .steps-box, .stage-box, .control-info-box, .total-box, .final-card {
@@ -2071,7 +2082,6 @@
                 border-radius: 18px;
             }
 
-            /* Бейджи больших блоков */
             .price-formula-box::before, .save-box::before, .docs-box::before,
             .learn-box::before, .pains-title, .compare-box::before,
             .savings-box::before, .guarantees-box::before, .steps-box::before,
@@ -2083,7 +2093,6 @@
                 top: -13px;
             }
 
-            /* Формула стоимости */
             .price-formula-visual {
                 flex-direction: column;
                 gap: 10px;
@@ -2094,42 +2103,35 @@
             .formula-item .num { width: 28px; height: 28px; font-size: 0.9rem; }
             .formula-highlight { font-size: 1rem; padding: 6px 16px; }
 
-            /* Определение */
             .definition-box, .industry-box {
                 padding: 20px 18px;
                 border-radius: 16px;
             }
             .definition-box-text { font-size: 1rem; }
 
-            /* ХО */
             .ho-col { padding: 22px 18px; border-radius: 18px; }
             .ho-col-title { font-size: 1.05rem; padding-bottom: 12px; margin-bottom: 16px; }
             .ho-list li { font-size: 0.98rem; padding-left: 30px; }
             .ho-list li strong { font-size: 0.95rem; }
             .ho-list li span { font-size: 0.88rem; }
 
-            /* Docs */
             .docs-item { padding: 18px 16px; }
             .docs-item-title { font-size: 1rem; }
             .docs-item-list li { font-size: 0.93rem; }
 
-            /* Save */
             .save-text { font-size: 1rem; }
             .save-rules li { font-size: 0.95rem; padding: 12px 14px; }
 
-            /* Learn */
             .learn-box-title { font-size: 1.1rem; }
             .learn-text { font-size: 1rem; }
             .learn-list li { font-size: 0.95rem; padding: 12px 14px; }
             .learn-warning { font-size: 0.92rem; padding: 14px 16px; }
 
-            /* Примеры */
             .examples-title { font-size: 1.15rem; }
             .example-card { padding: 20px 18px; }
             .example-title { font-size: 1rem; }
             .example-text { font-size: 0.95rem; }
 
-            /* Калькулятор */
             .calc-col { padding: 22px 18px; border-radius: 18px; }
             .calc-col-title { font-size: 1.05rem; padding-bottom: 12px; margin-bottom: 16px; }
             .op-row { padding: 16px 14px; border-radius: 14px; }
@@ -2140,18 +2142,9 @@
             input[type="range"] { height: 12px; }
             input[type="range"]::-webkit-slider-thumb { width: 32px; height: 32px; }
 
-            .mode-switch {
-                flex-direction: row;
-                gap: 6px;
-                padding: 3px;
-            }
-            .mode-btn {
-                font-size: 0.8rem;
-                padding: 10px 10px;
-                min-height: 44px;
-            }
+            .mode-switch { flex-direction: row; gap: 6px; padding: 3px; }
+            .mode-btn { font-size: 0.8rem; padding: 10px 10px; min-height: 44px; }
 
-            /* Итог */
             .total-rows { gap: 10px; }
             .total-row { padding: 10px 0; gap: 8px; }
             .total-row .tr-label { font-size: 0.95rem; }
@@ -2165,13 +2158,11 @@
             .total-final-value { font-size: 2rem; }
             .total-final-label { font-size: 1rem; }
 
-            /* Control info */
             .control-info-title { font-size: 1.1rem; }
             .control-info-text { font-size: 1rem; }
             .control-info-list li { font-size: 0.95rem; padding: 12px 14px; }
             .control-info-warning { font-size: 0.95rem; }
 
-            /* Тарифные сетки */
             .tariff-table-title, .control-table-title { font-size: 1.05rem; }
             .tariff-grid { grid-template-columns: 1fr 1fr; }
             .tariff-item { padding: 12px 14px; font-size: 0.9rem; }
@@ -2180,20 +2171,17 @@
             .control-grid { grid-template-columns: 1fr; }
             .control-item { padding: 12px 14px; }
 
-            /* Риски и решения */
             .pains-col { padding: 20px 18px; }
             .pains-col-title { font-size: 0.9rem; }
             .pains-list li strong { font-size: 0.95rem; }
             .pains-list li span { font-size: 0.88rem; }
 
-            /* Сравнение */
             .compare-card { padding: 22px 18px; }
             .compare-card-title { font-size: 1.05rem; }
             .compare-list li { font-size: 0.92rem; }
             .compare-total { padding: 14px 16px; }
             .compare-total .t-value { font-size: 1.5rem; }
 
-            /* Экономия */
             .savings-main {
                 flex-direction: column;
                 align-items: flex-start;
@@ -2204,23 +2192,19 @@
             .savings-year .s-value { font-size: 1.6rem; }
             .benefits-section-title { font-size: 0.95rem; }
 
-            /* Гарантии */
             .guarantees-title, .steps-title, .stage-title { font-size: 1.1rem; }
             .guarantee-card { padding: 18px 16px; }
 
-            /* Этапы */
             .step-item { padding: 16px 14px; gap: 12px; }
             .step-num { width: 36px; height: 36px; font-size: 1rem; }
             .step-title { font-size: 0.95rem; }
             .step-text { font-size: 0.88rem; }
 
-            /* Финальная карточка */
             .final-card-title { font-size: 1.2rem; }
             .final-price-value { font-size: 2rem; }
             .final-list li { font-size: 0.95rem; }
             .contact-value { font-size: 0.95rem; }
 
-            /* Таблица начала сотрудничества — карточки */
             .stage-table thead { display: none; }
             .stage-table, .stage-table tbody, .stage-table tr, .stage-table td {
                 display: block;
@@ -2250,7 +2234,6 @@
                 margin-bottom: 8px;
             }
 
-            /* Таблицы отчётности — карточки */
             .reports-table thead { display: none; }
             .reports-table, .reports-table tbody, .reports-table tr, .reports-table td {
                 display: block;
@@ -2288,17 +2271,14 @@
 
             .report-group-title { font-size: 0.85rem; margin-bottom: 10px; }
 
-            /* Убираем горизонтальный скролл */
             body, .main, .tab-panel, .card, .calc-col, .calc-grid {
                 overflow-x: hidden;
             }
 
-            /* Сетки внутри карточек */
             .not-included-two-cols { grid-template-columns: 1fr; gap: 12px; }
             .benefits-subgrid { grid-template-columns: 1fr; }
         }
 
-        /* Очень маленькие экраны */
         @media (max-width: 380px) {
             html { font-size: 14px; }
             .panel-header h1 { font-size: 1.25rem; }
@@ -2309,7 +2289,7 @@
 </head>
 <body>
 
-    <!-- ===== МОБИЛЬНЫЙ ХЕДЕР (только на телефоне) ===== -->
+    <!-- ===== МОБИЛЬНЫЙ ХЕДЕР ===== -->
     <div class="mobile-header">
         <div class="mobile-logo">
             <div class="mobile-logo-text">
@@ -2340,31 +2320,46 @@
             <nav class="nav-tabs">
                 <button class="nav-tab active" data-tab="tab1">
                     <span class="num">1</span>
-                    <span>О КЛИЕНТЕ</span>
+                    <span class="nav-text">
+                        <span>О КЛИЕНТЕ</span>
+                    </span>
                 </button>
                 <button class="nav-tab" data-tab="tab2">
                     <span class="num">2</span>
-                    <span>О КОМПАНИИ И ТАРИФЕ</span>
+                    <span class="nav-text">
+                        <span>О КОМПАНИИ И ТАРИФЕ</span>
+                    </span>
                 </button>
                 <button class="nav-tab" data-tab="tab3">
                     <span class="num">3</span>
-                    <span>ЧТО ТАКОЕ ХО</span>
+                    <span class="nav-text">
+                        <span>ЧТО ТАКОЕ Х.О.</span>
+                        <small>Хозяйственная операция</small>
+                    </span>
                 </button>
                 <button class="nav-tab" data-tab="tab4">
                     <span class="num">4</span>
-                    <span>РАСЧЁТ СТОИМОСТИ</span>
+                    <span class="nav-text">
+                        <span>РАСЧЁТ СТОИМОСТИ</span>
+                    </span>
                 </button>
                 <button class="nav-tab" data-tab="tab5">
                     <span class="num">5</span>
-                    <span>ВЫГОДА</span>
+                    <span class="nav-text">
+                        <span>ВЫГОДА</span>
+                    </span>
                 </button>
                 <button class="nav-tab" data-tab="tab6">
                     <span class="num">6</span>
-                    <span>ГАРАНТИИ И ПРОЦЕСС</span>
+                    <span class="nav-text">
+                        <span>ГАРАНТИИ И ПРОЦЕСС</span>
+                    </span>
                 </button>
                 <button class="nav-tab" data-tab="tab7">
                     <span class="num">7</span>
-                    <span>ИТОГИ И КОНТАКТЫ</span>
+                    <span class="nav-text">
+                        <span>ИТОГИ И КОНТАКТЫ</span>
+                    </span>
                 </button>
             </nav>
 
@@ -2451,7 +2446,7 @@
                                 </li>
                                 <li>
                                     <span class="icon-bullet">📊</span>
-                                    <span><strong>Объём операций</strong> — реализации, покупки, авансовые отчёты. Общая активность ~27 ХО в месяц.</span>
+                                    <span><strong>Объём операций</strong> — реализации, покупки, авансовые отчёты. Общая активность ~27 Х.О. в месяц.</span>
                                 </li>
                                 <li>
                                     <span class="icon-bullet">⚠️</span>
@@ -2732,15 +2727,15 @@
                 </div>
             </section>
 
-            <!-- ============ ВКЛАДКА 3: ЧТО ТАКОЕ ХО ============ -->
+            <!-- ============ ВКЛАДКА 3: ЧТО ТАКОЕ Х.О. ============ -->
             <section class="tab-panel" id="tab3">
                 <div class="panel-header">
                     <h1>
                         Что такое хозяйственная операция
-                        <span class="tag">ХО · основа тарифа</span>
+                        <span class="tag">Х.О. · основа тарифа</span>
                     </h1>
                     <p class="desc">
-                        Как рассчитывается стоимость обслуживания, что такое ХО,
+                        Как рассчитывается стоимость обслуживания, что такое Х.О.,
                         что считается и что не считается операцией.
                     </p>
                 </div>
@@ -2753,14 +2748,14 @@
 
                     <p class="price-formula-text">
                         Стоимость обслуживания рассчитывается
-                        <strong>исходя из количества ХО в месяц</strong>.
+                        <strong>исходя из количества Х.О. в месяц</strong>.
                         Чем больше операций вы вводите сами — тем меньше платите.
                     </p>
 
                     <div class="price-formula-visual">
                         <div class="formula-item">
                             <span class="num">1</span>
-                            <span>Базовый тариф по ХО</span>
+                            <span>Базовый тариф по Х.О.</span>
                         </div>
                         <span class="formula-eq">+</span>
                         <div class="formula-item">
@@ -2775,27 +2770,27 @@
                 <div class="definition-box">
                     <div class="definition-box-title">
                         <span>📚</span>
-                        <span>Что такое ХО</span>
+                        <span>Что такое Х.О. — хозяйственная операция</span>
                     </div>
                     <p class="definition-box-text">
                         Хозяйственная операция — это факт хозяйственной жизни бизнеса,
                         который требует отражения в учёте.
-                        <strong>Каждое движение денег или значимый документ = одна ХО</strong>.
+                        <strong>Каждое движение денег или значимый документ = одна Х.О.</strong>
                     </p>
                 </div>
 
                 <div class="ho-grid">
                     <div class="ho-col ho-col-yes">
-                        <div class="ho-col-title"><span>✅</span><span>Что считается ХО</span></div>
+                        <div class="ho-col-title"><span>✅</span><span>Что считается Х.О.</span></div>
                         <ul class="ho-list">
                             <li><strong>Поступления и реализация</strong><span>Оплата от заказчиков, акты, накладные</span></li>
                             <li><strong>Покупки (списания)</strong><span>ГСМ, запчасти, ремонт, лизинг</span></li>
                             <li><strong>Авансовый отчёт</strong><span>Отчёты водителей по топливу</span></li>
-                            <li><strong>Касса</strong><span>Розничная выручка за месяц = 1 ХО</span></li>
+                            <li><strong>Касса</strong><span>Розничная выручка за месяц = 1 Х.О.</span></li>
                         </ul>
                     </div>
                     <div class="ho-col ho-col-no">
-                        <div class="ho-col-title"><span>❌</span><span>Что не считается ХО</span></div>
+                        <div class="ho-col-title"><span>❌</span><span>Что не считается Х.О.</span></div>
                         <ul class="ho-list">
                             <li><strong>Банковские комиссии</strong><span>Загружаются автоматически</span></li>
                             <li><strong>Операции без ошибок</strong><span>Если ввели сами и правильно</span></li>
@@ -2812,7 +2807,7 @@
                     </div>
 
                     <p class="docs-text">
-                        Эти документы <strong>не входят в ХО</strong>. Вы можете выбрать:
+                        Эти документы <strong>не входят в Х.О.</strong> Вы можете выбрать:
                     </p>
 
                     <div class="docs-grid">
@@ -2862,15 +2857,15 @@
                     <div class="examples-grid">
                         <div class="example-card">
                             <div class="example-num">Пример 1</div>
-                            <div class="example-title">Сколько ХО у перевозчика</div>
+                            <div class="example-title">Сколько Х.О. у перевозчика</div>
                             <div class="example-text">
                                 <ul>
-                                    <li>15 рейсов = 15 ХО</li>
-                                    <li>10 покупок = 10 ХО</li>
-                                    <li>2 авансовых = 2 ХО</li>
+                                    <li>15 рейсов = 15 Х.О.</li>
+                                    <li>10 покупок = 10 Х.О.</li>
+                                    <li>2 авансовых = 2 Х.О.</li>
                                 </ul>
                             </div>
-                            <div class="example-result">Итого: 27 ХО</div>
+                            <div class="example-result">Итого: 27 Х.О.</div>
                         </div>
 
                         <div class="example-card">
@@ -2898,9 +2893,9 @@
                             <div class="example-title">Ошибка клиента</div>
                             <div class="example-text">
                                 Сами сформировали УПД с ошибкой. Бухгалтер исправил —
-                                операция стала ХО.
+                                операция стала Х.О.
                             </div>
-                            <div class="example-result">Операция стала ХО</div>
+                            <div class="example-result">Операция стала Х.О.</div>
                         </div>
                     </div>
                 </div>
@@ -2924,7 +2919,7 @@
                     </ul>
 
                     <div class="learn-warning">
-                        <strong>Ошибка</strong>, которую исправляет бухгалтер — становится ХО.
+                        <strong>Ошибка</strong>, которую исправляет бухгалтер — становится Х.О.
                     </div>
                 </div>
             </section>
@@ -3046,7 +3041,7 @@
                 <div class="total-box">
                     <div class="total-rows">
                         <div class="total-row">
-                            <span class="tr-label">ХО в тарифе</span>
+                            <span class="tr-label">Х.О. в тарифе</span>
                             <span class="tr-value" id="totalHo">27</span>
                         </div>
                         <div class="total-row">
@@ -3491,7 +3486,6 @@
             sidebar.classList.toggle('open');
         });
 
-        // Закрытие сайдбара при выборе вкладки (мобильный)
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 const targetId = tab.dataset.tab;
@@ -3507,7 +3501,6 @@
             });
         });
 
-        // Закрытие сайдбара по клику вне его (мобильный)
         document.querySelector('.main').addEventListener('click', () => {
             if (window.innerWidth <= 1000 && sidebar.classList.contains('open')) {
                 sidebar.classList.remove('open');
@@ -3666,7 +3659,7 @@
             TARIFF_GRID.forEach(row => {
                 const item = document.createElement('div');
                 item.className = 'tariff-item';
-                item.innerHTML = `<span class="tariff-range">${row.min}–${row.max} ХО</span><span class="tariff-price">${formatRub(row.price)}</span>`;
+                item.innerHTML = `<span class="tariff-range">${row.min}–${row.max} Х.О.</span><span class="tariff-price">${formatRub(row.price)}</span>`;
                 grid.appendChild(item);
             });
         }
@@ -3677,7 +3670,7 @@
             CONTROL_GRID.forEach(row => {
                 const item = document.createElement('div');
                 item.className = 'control-item';
-                item.innerHTML = `<span class="control-range">${row.min}–${row.max} ХО</span><span class="control-price">${formatRub(row.price)}</span>`;
+                item.innerHTML = `<span class="control-range">${row.min}–${row.max} Х.О.</span><span class="control-price">${formatRub(row.price)}</span>`;
                 grid.appendChild(item);
             });
         }
